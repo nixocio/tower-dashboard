@@ -22,7 +22,7 @@ To be able to set up a dev environment, few steps are required.
 
   ``` bash
   #> virtualenv /path/to/towerdasboard/venv
-  #> source /path/to/towerdashboard/venv
+  #> source /path/to/towerdashboard/venv/bin/activate
   ```
 
   3. Clone the repository
@@ -49,6 +49,11 @@ To be able to set up a dev environment, few steps are required.
 
   ``` bash
   #> FLASK_APP=/path/to/towerdashboard/app.py FLASK_DEBUG=1 TOWERDASHBOARD_SETTINGS=/tmp/settings.py flask run
+  ```
+
+  6. Initialize the DB
+  ```
+  #> curl http://127.0.0.1:5000/init-db
   ```
 
 tower-dashboard should be running on your local loop on port 5000 (`http://127.0.0.1:5000`)
