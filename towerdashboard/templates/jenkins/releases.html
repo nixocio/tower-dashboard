@@ -16,18 +16,7 @@
 <div class="tab-content">
 {% for version in versions %}
   <div class="tab-pane {% if loop.index == 1 %}active{% endif %}" id="release{{ version.id }}">
-    <hr/>
-    <h4>{{ version.version }}</h4>
-    {% if version.version != 'In Development' %}
-    Next Release: {{ version.next_release }} -
-    {% if version.next_release_test_plan %}
-        <a href="{{ version.next_release_test_plan }}">Test Plan</a>
-    {% else %}
-        No Test Plan available yet
-    {% endif %}
-    {% endif %}
-    <hr/><br/>
-
+    <br/>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -46,7 +35,48 @@
         </tr>
       </tbody>
     </table>
+    {% if version.version != 'In Development' %}
+    Next Release: <b>{{ version.next_release }}</b> -
+    {% if version.next_release_test_plan %}
+        <a href="{{ version.next_release_test_plan }}">Test Plan</a>
+    {% else %}
+        No Test Plan available yet
+    {% endif %}
+    <br/><br/>
+    {% endif %}
 
+    {% if version.issues %}
+    <h4>Issues (<a href="{{ version.issues.html_url}}">{{ version.issues.count }}</a> open| <a href="{{ version.issues.needs_test_html_url }}">{{ version.issues.needs_test_count }}</a> in needs_test)</h4>
+    {% else %}
+    <h4>Issues</h4>
+    {% endif %}
+    <hr/>
+
+    {% if not version.issues %}
+        No issue marked with <b>the release_{{ version.next_release }}</b> milestone
+    {% elif version.issues.needs_test_count > 0 %}
+    Below are listed the issues in with label <i>state:needs_test</i></br></br>
+    <table class="table table-bordered">
+      <!-- <thead> -->
+      <!--   <tr> -->
+      <!--     <th scope="col">Title</th> -->
+      <!--     <th scope="col">Assignees</th> -->
+      <!--     <th scope="col">Last Update</th> -->
+      <!--   </tr> -->
+      <!-- </thead> -->
+      <tbody>
+        {% for issue in version.issues.needs_test_issues %}
+        <tr>
+            <td><a href="{{ issue.url }}">{{ issue.title }}</a></td>
+            <td>{{ issue.assignee }}</td>
+            <td>{{ issue.updated_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    No issue labeled with <i>label:state:needs_test</i> for this milestone
+    {% endif %}
     <br/><br/>
     <h4>Integration Results</h4>
     <hr/>
@@ -57,6 +87,7 @@
     <table class="table table-bordered">
         <thead align="center">
           <th scope="col"></th>
+          <th scope="col">devel</th>
           <th scope="col">stable-2.7</th>
           <th scope="col">stable-2.6</th>
           <th scope="col">stable-2.5</th>
@@ -67,7 +98,7 @@
             {% for result in results %}
             {% if result.id == version.id %}
 
-              {% if loop.index == 1 or result.ansible == 'stable-2.7'%}
+              {% if loop.index == 1 or result.ansible == 'devel'%}
               <tr>
               <th scope="row">{{ result.os_description }}</th>
               {% endif %}

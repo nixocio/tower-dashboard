@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Red Hat, Inc.
+# Copyright 2018-2019 Red Hat, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the 'License'); you may
 # not use this file except in compliance with the License. You may obtain
@@ -22,6 +22,7 @@ import requests
 from datetime import datetime
 from flask import current_app
 from towerdashboard import db
+from towerdashboard import github
 from towerdashboard.jenkins import jenkins
 
 
@@ -94,17 +95,31 @@ def results():
     )
 
 
-def retrieve_test_plan_url(version):
-    url = 'https://api.github.com/repos/%s/contents/docs/test_plans/release_validation/testplan-%s.md' % (current_app.config.get('TOWERQA_REPO'), version)
+def serialize_issue(milestone_number, milestone_name):
+    issues = github.get_issues_information(milestone_number)
 
-    res = requests.get(
-        url,
-        headers={'Authorization': 'token %s' % current_app.config.get('GITHUB_TOKEN')}
-    )
+    needs_test_issues = []
+    for issue in issues:
+        for label in issue['labels']:
+            if label['name'] == 'state:needs_test':
+                needs_test_issues.append({
+                    'title': issue['title'],
+                    'url': issue['html_url'],
+                    'updated_at': issue['updated_at'],
+                    'assignee': ', '.join([i['login'] for i in issue['assignees']])
+                })
 
-    if res.status_code == 200:
-        return 'https://github.com/%s/blob/devel/docs/test_plans/release_validation/testplan-%s.md' % (current_app.config.get('TOWERQA_REPO'), version)
-    return None
+    return {
+        'count': len(issues),
+        'html_url': 'https://github.com/{}/issues?q=is:open+milestone:{}'.format(
+            current_app.config.get('TOWERQA_REPO')[:-3], milestone_name
+        ),
+        'needs_test_count': len(needs_test_issues),
+        'needs_test_issues': needs_test_issues,
+        'needs_test_html_url': 'https://github.com/{}/issues?q=is:open+milestone:{}+label:state:needs_test'.format(
+            current_app.config.get('TOWERQA_REPO')[:-3], milestone_name
+        )
+    }
 
 
 @jenkins.route('/releases', strict_slashes=False)
@@ -119,12 +134,8 @@ def releases():
     results = db_access.execute(results_query).fetchall()
     results = db.format_fetchall(results)
 
-    url = 'https://api.github.com/repos/%s/branches' % current_app.config.get('TOWERQA_REPO')
-    branches = requests.get(
-        url,
-        headers={'Authorization': 'token %s' % current_app.config.get('GITHUB_TOKEN')}
-    ).json()
-    res = [branch['name'] for branch in branches]
+    branches = github.get_branches()
+    milestones = github.get_milestones()
 
     now = datetime.now()
     for result in results:
@@ -135,10 +146,16 @@ def releases():
     for version in versions:
         if 'devel' not in version['version'].lower():
             _version = version['version'].lower().replace(' ', '_')
-            _res = [r for r in res if r.startswith(_version)]
+            _res = [branch for branch in branches if branch.startswith(_version)]
             _res.sort()
+            milestone_name = _res[-1]
             version['next_release'] = _res[-1]
             version['next_release'] = version['next_release'].replace('release_', '')
-            version['next_release_test_plan'] = retrieve_test_plan_url(version['next_release'])
+            version['next_release_test_plan'] = github.get_test_plan_url(version['next_release'])
+        else:
+            milestone_name = 'release_3.5.0'
+
+        milestone_number = milestones.get(milestone_name)
+        version['issues'] = serialize_issue(milestone_number, milestone_name) if milestone_number else None
 
     return flask.render_template('jenkins/releases.html', versions=versions, results=results)

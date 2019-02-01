@@ -79,24 +79,28 @@ TOWER_OS = [
 ]
 
 TOWER_ANSIBLE = [
+    {'tower': 'In Development', 'ansible': 'devel'},
     {'tower': 'In Development', 'ansible': 'stable-2.7'},
     {'tower': 'In Development', 'ansible': 'stable-2.6'},
     {'tower': 'In Development', 'ansible': 'stable-2.5'},
     {'tower': 'In Development', 'ansible': 'stable-2.4'},
     {'tower': 'In Development', 'ansible': 'stable-2.3'},
 
+    {'tower': 'Release 3.4', 'ansible': 'devel'},
     {'tower': 'Release 3.4', 'ansible': 'stable-2.7'},
     {'tower': 'Release 3.4', 'ansible': 'stable-2.6'},
     {'tower': 'Release 3.4', 'ansible': 'stable-2.5'},
     {'tower': 'Release 3.4', 'ansible': 'stable-2.4'},
     {'tower': 'Release 3.4', 'ansible': 'stable-2.3'},
 
+    {'tower': 'Release 3.3', 'ansible': 'devel'},
     {'tower': 'Release 3.3', 'ansible': 'stable-2.7'},
     {'tower': 'Release 3.3', 'ansible': 'stable-2.6'},
     {'tower': 'Release 3.3', 'ansible': 'stable-2.5'},
     {'tower': 'Release 3.3', 'ansible': 'stable-2.4'},
     {'tower': 'Release 3.3', 'ansible': 'stable-2.3'},
 
+    {'tower': 'Release 3.2', 'ansible': 'devel'},
     {'tower': 'Release 3.2', 'ansible': 'stable-2.7'},
     {'tower': 'Release 3.2', 'ansible': 'stable-2.6'},
     {'tower': 'Release 3.2', 'ansible': 'stable-2.5'},
@@ -104,14 +108,12 @@ TOWER_ANSIBLE = [
     {'tower': 'Release 3.2', 'ansible': 'stable-2.3'},
 ]
 
-
-# (FIXME) spredzy: Dummy data for test purpose remove/move them
-RESULTS = [
-    {'release': 'release_3.3.2', 'os': 'rhel-7.6-x86_64', 'ansible': 'stable-2.7', 'status': 'SUCCESS', 'job_id': 12},
-    {'release': 'release_3.3.2', 'os': 'rhel-7.5-x86_64', 'ansible': 'stable-2.6', 'status': 'SUCCESS', 'job_id': 13},
-    {'release': 'release_3.3.2', 'os': 'rhel-7.4-x86_64', 'ansible': 'stable-2.5', 'status': 'SUCCESS', 'job_id': 16},
-    {'release': 'release_3.2.9', 'os': 'rhel-7.6-x86_64', 'ansible': 'stable-2.7', 'status': 'SUCCESS', 'job_id': 19},
-    {'release': 'release_3.2.9', 'os': 'rhel-7.5-x86_64', 'ansible': 'stable-2.7', 'status': 'SUCCESS', 'job_id': 20},
-    {'release': 'release_3.2.9', 'os': 'rhel-7.4-x86_64', 'ansible': 'stable-2.7', 'status': 'SUCCESS', 'job_id': 24},
-    {'release': 'release_3.2.9', 'os': 'centos-latest-x86_64', 'ansible': 'stable-2.7', 'status': 'FAILURE', 'job_id': 24},
-]
+# RESULTS = [
+#     {'release': 'release_3.3.2', 'os': 'rhel-7.6-x86_64', 'ansible': 'stable-2.7', 'status': 'SUCCESS', 'job_id': 12},
+#     {'release': 'release_3.3.2', 'os': 'rhel-7.5-x86_64', 'ansible': 'stable-2.6', 'status': 'SUCCESS', 'job_id': 13},
+#     {'release': 'release_3.3.2', 'os': 'rhel-7.4-x86_64', 'ansible': 'stable-2.5', 'status': 'SUCCESS', 'job_id': 16},
+#     {'release': 'release_3.2.9', 'os': 'rhel-7.6-x86_64', 'ansible': 'stable-2.7', 'status': 'SUCCESS', 'job_id': 19},
+#     {'release': 'release_3.2.9', 'os': 'rhel-7.5-x86_64', 'ansible': 'stable-2.7', 'status': 'SUCCESS', 'job_id': 20},
+#     {'release': 'release_3.2.9', 'os': 'rhel-7.4-x86_64', 'ansible': 'stable-2.7', 'status': 'SUCCESS', 'job_id': 24},
+#     {'release': 'release_3.2.9', 'os': 'centos-latest-x86_64', 'ansible': 'stable-2.7', 'status': 'FAILURE', 'job_id': 24},
+# ]
