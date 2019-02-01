@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-# Copyright 2018 Red Hat, Inc.
+# Copyright 2018-2019 Red Hat, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the 'License'); you may
 # not use this file except in compliance with the License. You may obtain
@@ -26,6 +26,7 @@ ANSIBLE_VERSIONS = [
 ]
 
 OS_VERSIONS = [
+    {'name': 'rhel-8.0-x86_64', 'desc': 'RHEL 8.0', 'family': 'RHEL'},
     {'name': 'rhel-7.6-x86_64', 'desc': 'RHEL 7.6', 'family': 'RHEL'},
     {'name': 'rhel-7.5-x86_64', 'desc': 'RHEL 7.5', 'family': 'RHEL'},
     {'name': 'rhel-7.4-x86_64', 'desc': 'RHEL 7.4', 'family': 'RHEL'},
@@ -39,17 +40,26 @@ OS_VERSIONS = [
 #
 TOWER_VERSIONS = [
     {'name': 'In Development', 'general_availability': None, 'end_of_full_support': None, 'end_of_maintenance_support': None, 'end_of_life': None},
+    {'name': 'Release 3.4', 'general_availability': '2019-01-09', 'end_of_full_support': '2019-07-09', 'end_of_maintenance_support': '2020-01-09', 'end_of_life': '2020-07-09'},
     {'name': 'Release 3.3', 'general_availability': '2018-09-12', 'end_of_full_support': '2019-03-12', 'end_of_maintenance_support': '2019-09-12', 'end_of_life': '2020-03-12'},
     {'name': 'Release 3.2', 'general_availability': '2017-10-02', 'end_of_full_support': '2018-04-02', 'end_of_maintenance_support': '2018-10-02', 'end_of_life': '2019-04-02'},
 ]
 
 TOWER_OS = [
+    {'tower': 'In Development', 'os': 'rhel-8.0-x86_64'},
     {'tower': 'In Development', 'os': 'rhel-7.6-x86_64'},
     {'tower': 'In Development', 'os': 'rhel-7.5-x86_64'},
     {'tower': 'In Development', 'os': 'rhel-7.4-x86_64'},
     {'tower': 'In Development', 'os': 'centos-latest-x86_64'},
     {'tower': 'In Development', 'os': 'ol-7.5-x86_64'},
     {'tower': 'In Development', 'os': 'ubuntu-16.04-x86_64'},
+
+    {'tower': 'Release 3.4', 'os': 'rhel-7.6-x86_64'},
+    {'tower': 'Release 3.4', 'os': 'rhel-7.5-x86_64'},
+    {'tower': 'Release 3.4', 'os': 'rhel-7.4-x86_64'},
+    {'tower': 'Release 3.4', 'os': 'centos-latest-x86_64'},
+    {'tower': 'Release 3.4', 'os': 'ol-7.5-x86_64'},
+    {'tower': 'Release 3.4', 'os': 'ubuntu-16.04-x86_64'},
 
     {'tower': 'Release 3.3', 'os': 'rhel-7.6-x86_64'},
     {'tower': 'Release 3.3', 'os': 'rhel-7.5-x86_64'},
@@ -75,6 +85,12 @@ TOWER_ANSIBLE = [
     {'tower': 'In Development', 'ansible': 'stable-2.4'},
     {'tower': 'In Development', 'ansible': 'stable-2.3'},
 
+    {'tower': 'Release 3.4', 'ansible': 'stable-2.7'},
+    {'tower': 'Release 3.4', 'ansible': 'stable-2.6'},
+    {'tower': 'Release 3.4', 'ansible': 'stable-2.5'},
+    {'tower': 'Release 3.4', 'ansible': 'stable-2.4'},
+    {'tower': 'Release 3.4', 'ansible': 'stable-2.3'},
+
     {'tower': 'Release 3.3', 'ansible': 'stable-2.7'},
     {'tower': 'Release 3.3', 'ansible': 'stable-2.6'},
     {'tower': 'Release 3.3', 'ansible': 'stable-2.5'},
@@ -89,6 +105,7 @@ TOWER_ANSIBLE = [
 ]
 
 
+# (FIXME) spredzy: Dummy data for test purpose remove/move them
 RESULTS = [
     {'release': 'release_3.3.2', 'os': 'rhel-7.6-x86_64', 'ansible': 'stable-2.7', 'status': 'SUCCESS', 'job_id': 12},
     {'release': 'release_3.3.2', 'os': 'rhel-7.5-x86_64', 'ansible': 'stable-2.6', 'status': 'SUCCESS', 'job_id': 13},
