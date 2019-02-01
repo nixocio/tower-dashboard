@@ -8,6 +8,52 @@ A set of Tower QE dashboard that allows to have better insight of what is going 
 
 ### Production
 
+To be able to setup a production environment, few steps are required.
+
+  1. Locally build the `tower-dashboard` rpm. (Mock needs to be previously installed)
+
+  ```bash
+  #> ./contrib/packaging/build_rpm.sh
+  ```
+
+  2. scp the resulting rpm package to your production system
+
+  3. On the production server
+
+  ```bash
+  #> yum -y install httpd mod_wsgi epel-release
+  #> yum -y install python-pip
+  #> yum -y install /path/to/tower-dashboard.rpm
+  #> pip install -U flask
+  ```
+
+  4. Create the proper httpd configuration (`/etc/httpd/conf.d/00_dashboard,conf`)
+
+  ```
+  <VirtualHost *:80>
+    CustomLog logs/tower_dashboard combined
+    ErrorLog logs/tower_dashboar_errors
+    DocumentRoot /usr/share/tower-dashboard
+
+    WSGIScriptAlias / /usr/share/tower-dashboard/wsgi.py
+    WSGIPassAuthorization On
+
+    <Directory /usr/lib/python2.7/site-packages/towerdashboard>
+       AllowOverride None
+       Require all granted
+    </Directory>
+
+    <Directory /usr/share/tower-dashboard>
+       AllowOverride None
+       Require all granted
+    </Directory>
+  </VirtualHost>
+  ```
+
+ 5. Edit `/etc/tower_dashboard/settings.py`
+
+ 6. Restart httpd
+
 ### Development
 
 To be able to set up a dev environment, few steps are required.

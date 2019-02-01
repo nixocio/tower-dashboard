@@ -26,7 +26,7 @@ SHA=$(git rev-parse HEAD | cut -c1-8)
 # Setup: Ensure we start with a clean environment from rpmbuild and mock
 #        and copy the spec file over
 #
-rm -rf ${HOME}/rpmbuild && mock --clean
+rm -rf ${HOME}/rpmbuild && mock -r epel-7-x86_64 --clean
 rpmdev-setuptree
 cp ${PROJ_NAME}.spec ${HOME}/rpmbuild/SPECS/
 
