@@ -39,10 +39,10 @@ OS_VERSIONS = [
 # Taken from: https://access.redhat.com/support/policy/updates/ansible-tower
 #
 TOWER_VERSIONS = [
-    {'name': 'In Development', 'general_availability': None, 'end_of_full_support': None, 'end_of_maintenance_support': None, 'end_of_life': None},
-    {'name': 'Release 3.4', 'general_availability': '2019-01-09', 'end_of_full_support': '2019-07-09', 'end_of_maintenance_support': '2020-01-09', 'end_of_life': '2020-07-09'},
-    {'name': 'Release 3.3', 'general_availability': '2018-09-12', 'end_of_full_support': '2019-03-12', 'end_of_maintenance_support': '2019-09-12', 'end_of_life': '2020-03-12'},
-    {'name': 'Release 3.2', 'general_availability': '2017-10-02', 'end_of_full_support': '2018-04-02', 'end_of_maintenance_support': '2018-10-02', 'end_of_life': '2019-04-02'},
+    {'name': 'In Development', 'code': 'devel', 'general_availability': None, 'end_of_full_support': None, 'end_of_maintenance_support': None, 'end_of_life': None},
+    {'name': 'Release 3.4', 'code': '3.4', 'general_availability': '2019-01-09', 'end_of_full_support': '2019-07-09', 'end_of_maintenance_support': '2020-01-09', 'end_of_life': '2020-07-09'},
+    {'name': 'Release 3.3', 'code': '3.3', 'general_availability': '2018-09-12', 'end_of_full_support': '2019-03-12', 'end_of_maintenance_support': '2019-09-12', 'end_of_life': '2020-03-12'},
+    {'name': 'Release 3.2', 'code': '3.2', 'general_availability': '2017-10-02', 'end_of_full_support': '2018-04-02', 'end_of_maintenance_support': '2018-10-02', 'end_of_life': '2019-04-02'},
 ]
 
 TOWER_OS = [
@@ -108,7 +108,7 @@ TOWER_ANSIBLE = [
     {'tower': 'Release 3.2', 'ansible': 'stable-2.3'},
 ]
 
-# RESULTS = [
+RESULTS = [
 #     {'release': 'release_3.3.2', 'os': 'rhel-7.6-x86_64', 'ansible': 'stable-2.7', 'status': 'SUCCESS', 'job_id': 12},
 #     {'release': 'release_3.3.2', 'os': 'rhel-7.5-x86_64', 'ansible': 'stable-2.6', 'status': 'SUCCESS', 'job_id': 13},
 #     {'release': 'release_3.3.2', 'os': 'rhel-7.4-x86_64', 'ansible': 'stable-2.5', 'status': 'SUCCESS', 'job_id': 16},
@@ -116,4 +116,4 @@ TOWER_ANSIBLE = [
 #     {'release': 'release_3.2.9', 'os': 'rhel-7.5-x86_64', 'ansible': 'stable-2.7', 'status': 'SUCCESS', 'job_id': 20},
 #     {'release': 'release_3.2.9', 'os': 'rhel-7.4-x86_64', 'ansible': 'stable-2.7', 'status': 'SUCCESS', 'job_id': 24},
 #     {'release': 'release_3.2.9', 'os': 'centos-latest-x86_64', 'ansible': 'stable-2.7', 'status': 'FAILURE', 'job_id': 24},
-# ]
+]

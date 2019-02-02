@@ -63,7 +63,7 @@ def init_db():
 
         for version in base.TOWER_VERSIONS:
             _tempfile.write(
-                'INSERT INTO tower_versions (version, general_availability, end_of_full_support, end_of_maintenance_support, end_of_life) VALUES ("%s", "%s", "%s", "%s", "%s");\n' % (version['name'], version['general_availability'], version['end_of_full_support'], version['end_of_maintenance_support'], version['end_of_life'])
+                'INSERT INTO tower_versions (version, code, general_availability, end_of_full_support, end_of_maintenance_support, end_of_life) VALUES ("%s", "%s", "%s", "%s", "%s", "%s");\n' % (version['name'], version['code'], version['general_availability'], version['end_of_full_support'], version['end_of_maintenance_support'], version['end_of_life'])
             )
 
         _tempfile.flush()

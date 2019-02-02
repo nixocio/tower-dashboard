@@ -72,7 +72,10 @@ def tower_versions():
 def results():
     payload = flask.request.json
 
-    tower_query = 'SELECT id FROM tower_versions WHERE version = "%s"' % payload['tower'].capitalize()[:11].replace('_', ' ')
+    if 'devel' == payload['tower']:
+        tower_query = 'SELECT id FROM tower_versions WHERE code = "devel"'
+    else:
+        tower_query = 'SELECT id FROM tower_versions WHERE code = "%s"' % payload['tower'][0:3]
     ansible_query = 'SELECT id FROM ansible_versions WHERE version = "%s"' % payload['ansible']
     os_query = 'SELECT id FROM os_versions WHERE version = "%s"' % payload['os']
 

@@ -22,6 +22,7 @@ CREATE TABLE os_versions (
 CREATE TABLE tower_versions (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   version TEXT UNIQUE NOT NULL,
+  code TEXT UNIQUE NOT NULL,
   general_availability TEXT,
   end_of_full_support TEXT,
   end_of_maintenance_support TEXT,
