@@ -46,7 +46,7 @@
     {% endif %}
 
     {% if version.issues %}
-    <h4>Issues (<a href="{{ version.issues.html_url}}">{{ version.issues.count }}</a> open| <a href="{{ version.issues.needs_test_html_url }}">{{ version.issues.needs_test_count }}</a> in needs_test)</h4>
+    <h4>Issues (<a href="{{ version.issues.html_url}}">{{ version.issues.count }}</a> open | <a href="{{ version.issues.needs_test_html_url }}">{{ version.issues.needs_test_count }}</a> in needs_test)</h4>
     {% else %}
     <h4>Issues</h4>
     {% endif %}
@@ -57,18 +57,11 @@
     {% elif version.issues.needs_test_count > 0 %}
     Below are listed the issues in with label <i>state:needs_test</i></br></br>
     <table class="table table-bordered">
-      <!-- <thead> -->
-      <!--   <tr> -->
-      <!--     <th scope="col">Title</th> -->
-      <!--     <th scope="col">Assignees</th> -->
-      <!--     <th scope="col">Last Update</th> -->
-      <!--   </tr> -->
-      <!-- </thead> -->
       <tbody>
         {% for issue in version.issues.needs_test_issues %}
         <tr>
             <td><a href="{{ issue.url }}">{{ issue.title }}</a></td>
-            <td>{{ issue.assignee }}</td>
+            <td>{{ issue.assignee if issue.assignee != '' else 'Nobody yet' }}</td>
             <td>{{ issue.updated_at }}</td>
         </tr>
         {% endfor %}
