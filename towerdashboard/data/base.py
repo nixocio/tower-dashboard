@@ -30,7 +30,7 @@ OS_VERSIONS = [
     {'name': 'rhel-7.6-x86_64', 'desc': 'RHEL 7.6', 'family': 'RHEL'},
     {'name': 'rhel-7.5-x86_64', 'desc': 'RHEL 7.5', 'family': 'RHEL'},
     {'name': 'rhel-7.4-x86_64', 'desc': 'RHEL 7.4', 'family': 'RHEL'},
-    {'name': 'centos-latest-x86_64', 'desc': 'CentOS Latest', 'family': 'RHEL'},  # noqa
+    {'name': 'centos-7.latest-x86_64', 'desc': 'CentOS Latest', 'family': 'RHEL'},  # noqa
     {'name': 'ol-7.5-x86_64', 'desc': 'Oracle Linux 7.5', 'family': 'RHEL'},
     {'name': 'ubuntu-16.04-x86_64', 'desc': 'Ubuntu 16.04', 'family': 'Ubuntu'},  # noqa
     {'name': 'ubuntu-14.04-x86_64', 'desc': 'Ubuntu 14.04', 'family': 'Ubuntu'},  # noqa
