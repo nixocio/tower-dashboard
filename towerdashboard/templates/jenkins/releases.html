@@ -7,7 +7,7 @@
 <ul class="nav nav-tabs">
 {% for version in versions %}
   <li class="nav-item">
-    <a class="nav-link {% if loop.index == 1 %}active{% endif %}" data-toggle="tab" href="#release{{ version.id }}">{{ version.version }}</a>
+	  <a class="nav-link {% if loop.index == 1 %}active{% endif %}" data-toggle="tab" href="#release{{ version.id }}">Release {{ version.next_release }} {% if loop.index == 1 %}(devel){% endif %}</a>
   </li>
 {% endfor %}
 </ul>
@@ -35,15 +35,12 @@
         </tr>
       </tbody>
     </table>
-    {% if version.version != 'In Development' %}
-    Next Release: <b>{{ version.next_release }}</b> -
     {% if version.next_release_test_plan %}
         <a href="{{ version.next_release_test_plan }}">Test Plan</a>
     {% else %}
         No Test Plan available yet
     {% endif %}
     <br/><br/>
-    {% endif %}
 
     {% if version.issues %}
     <h4>Issues (<a href="{{ version.issues.html_url}}">{{ version.issues.count }}</a> open | <a href="{{ version.issues.needs_test_html_url }}">{{ version.issues.needs_test_count }}</a> in needs_test)</h4>
@@ -53,7 +50,7 @@
     <hr/>
 
     {% if not version.issues %}
-        No issue marked with <b>the release_{{ version.next_release }}</b> milestone
+    No issue marked with the <b>release_{{ version.next_release }}</b> milestone
     {% elif version.issues.needs_test_count > 0 %}
     Below are listed the issues in with label <i>state:needs_test</i></br></br>
     <table class="table table-bordered">
