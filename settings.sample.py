@@ -26,3 +26,7 @@
 
 # Github name of the Tower QE team repo
 # TOWERQA_REPO =
+
+
+# Name of version in devel
+# DEVEL_VERSION_NAME = 3.5.0
