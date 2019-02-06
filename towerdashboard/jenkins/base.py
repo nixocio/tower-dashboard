@@ -156,7 +156,8 @@ def releases():
             version['next_release'] = version['next_release'].replace('release_', '')
             version['next_release_test_plan'] = github.get_test_plan_url(version['next_release'])
         else:
-            milestone_name = 'release_3.5.0'
+            version['next_release'] = current_app.config.get('DEVEL_VERSION_NAME', 'undef')
+            milestone_name = 'release_{}'.format(version['next_release'])
 
         milestone_number = milestones.get(milestone_name)
         version['issues'] = serialize_issue(milestone_number, milestone_name) if milestone_number else None
