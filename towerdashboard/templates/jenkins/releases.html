@@ -36,7 +36,7 @@
       </tbody>
     </table>
     {% if loop.index == 1 %}
-       <a href="{{ version.spreadsheet_url }}">Planning Sheet</a> -
+    <a href="{{ version.spreadsheet_url }}">Tower {{ version.next_release[:3] }} Feature Planning</a> -
     {% endif %}
     {% if version.next_release_test_plan %}
         <a href="{{ version.next_release_test_plan }}">Test Plan</a>
