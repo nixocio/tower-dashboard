@@ -27,6 +27,7 @@ CREATE TABLE tower_versions (
   end_of_full_support TEXT,
   end_of_maintenance_support TEXT,
   end_of_life TEXT,
+  spreadsheet_url TEXT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 

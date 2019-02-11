@@ -39,10 +39,42 @@ OS_VERSIONS = [
 # Taken from: https://access.redhat.com/support/policy/updates/ansible-tower
 #
 TOWER_VERSIONS = [
-    {'name': 'In Development', 'code': 'devel', 'general_availability': None, 'end_of_full_support': None, 'end_of_maintenance_support': None, 'end_of_life': None},
-    {'name': 'Release 3.4', 'code': '3.4', 'general_availability': '2019-01-09', 'end_of_full_support': '2019-07-09', 'end_of_maintenance_support': '2020-01-09', 'end_of_life': '2020-07-09'},
-    {'name': 'Release 3.3', 'code': '3.3', 'general_availability': '2018-09-12', 'end_of_full_support': '2019-03-12', 'end_of_maintenance_support': '2019-09-12', 'end_of_life': '2020-03-12'},
-    {'name': 'Release 3.2', 'code': '3.2', 'general_availability': '2017-10-02', 'end_of_full_support': '2018-04-02', 'end_of_maintenance_support': '2018-10-02', 'end_of_life': '2019-04-02'},
+    {
+        'name': 'In Development',
+        'code': 'devel',
+        'general_availability': None,
+        'end_of_full_support': None,
+        'end_of_maintenance_support': None,
+        'end_of_life': None,
+        'spreadsheet_url': 'https://docs.google.com/spreadsheets/d/1Vo1lyIx_33Ad7TPqzO19NAe501CRcX0HTA0Rgepm5j0/'
+    },
+    {
+        'name': 'Release 3.4',
+        'code': '3.4',
+        'general_availability': '2019-01-09',
+        'end_of_full_support': '2019-07-09',
+        'end_of_maintenance_support': '2020-01-09',
+        'end_of_life': '2020-07-09',
+        'spreadsheet_url': None
+    },
+    {
+        'name': 'Release 3.3',
+        'code': '3.3',
+        'general_availability': '2018-09-12',
+        'end_of_full_support': '2019-03-12',
+        'end_of_maintenance_support': '2019-09-12',
+        'end_of_life': '2020-03-12',
+        'spreadsheet_url': None
+    },
+    {
+        'name': 'Release 3.2',
+        'code': '3.2',
+        'general_availability': '2017-10-02',
+        'end_of_full_support': '2018-04-02',
+        'end_of_maintenance_support': '2018-10-02',
+        'end_of_life': '2019-04-02',
+        'spreadsheet_url': None
+    },
 ]
 
 TOWER_OS = [
