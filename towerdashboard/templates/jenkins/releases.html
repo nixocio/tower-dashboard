@@ -17,6 +17,7 @@
 {% for version in versions %}
   <div class="tab-pane {% if loop.index == 1 %}active{% endif %}" id="release{{ version.id }}">
     <br/>
+    {% if loop.index != 1 %}
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -35,6 +36,7 @@
         </tr>
       </tbody>
     </table>
+    {% endif %}
     {% if loop.index == 1 %}
     <a href="{{ version.spreadsheet_url }}">Tower {{ version.next_release[:3] }} Feature Planning</a> -
     {% endif %}
