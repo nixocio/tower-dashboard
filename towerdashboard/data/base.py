@@ -52,10 +52,10 @@ TOWER_VERSIONS = [
     {
         'name': 'Release 3.5',
         'code': '3.5',
-        'general_availability': None,
-        'end_of_full_support': None,
-        'end_of_maintenance_support': None,
-        'end_of_life': None,
+        'general_availability': '2019-05-29',
+        'end_of_full_support': '2019-10-29',
+        'end_of_maintenance_support': '2020-05-29',
+        'end_of_life': '2020-10-29',
         'spreadsheet_url': 'https://docs.google.com/spreadsheets/d/1Vo1lyIx_33Ad7TPqzO19NAe501CRcX0HTA0Rgepm5j0/'
     },
     {
