@@ -32,7 +32,7 @@ OS_VERSIONS = [
     {'name': 'rhel-7.5-x86_64', 'desc': 'RHEL 7.5', 'family': 'RHEL'},
     {'name': 'rhel-7.4-x86_64', 'desc': 'RHEL 7.4', 'family': 'RHEL'},
     {'name': 'centos-7.latest-x86_64', 'desc': 'CentOS Latest', 'family': 'RHEL'},  # noqa
-    {'name': 'ol-7.6-x86_64', 'desc': 'Oracle Linux 7.5', 'family': 'RHEL'},
+    {'name': 'ol-7.6-x86_64', 'desc': 'Oracle Linux 7.6', 'family': 'RHEL'},
     {'name': 'ubuntu-16.04-x86_64', 'desc': 'Ubuntu 16.04', 'family': 'Ubuntu'},  # noqa
     {'name': 'ubuntu-14.04-x86_64', 'desc': 'Ubuntu 14.04', 'family': 'Ubuntu'},  # noqa
 ]
@@ -85,7 +85,6 @@ TOWER_OS = [
     {'tower': 'In Development', 'os': 'rhel-7.4-x86_64'},
     {'tower': 'In Development', 'os': 'centos-7.latest-x86_64'},
     {'tower': 'In Development', 'os': 'ol-7.6-x86_64'},
-    {'tower': 'In Development', 'os': 'ubuntu-16.04-x86_64'},
 
     {'tower': 'Release 3.5', 'os': 'rhel-8.0-x86_64'},
     {'tower': 'Release 3.5', 'os': 'rhel-7.6-x86_64'},
