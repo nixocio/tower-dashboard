@@ -26,10 +26,20 @@ API_GITHUB = 'https://api.github.com'
 def github_request(url):
     res = requests.get(
         url,
-        headers={'Authorization': 'token %s' % current_app.config.get('GITHUB_TOKEN')}
+        headers={
+            'Authorization': 'token %s' % current_app.config.get('GITHUB_TOKEN'),
+            'Accept': 'application/vnd.github.inertia-preview+json'
+        }
     )
 
     return res
+
+
+def get_project_by_name(name):
+    url = '{}/orgs/ansible/projects'.format(API_GITHUB)
+    projects = github_request(url).json()
+
+    return [proj for proj in projects if proj['name'] == name][0]
 
 
 def get_branches():
