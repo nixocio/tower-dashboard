@@ -161,5 +161,8 @@ def releases():
         milestone_number = milestones.get(milestone_name)
         version['issues'] = serialize_issue(milestone_number, milestone_name) if milestone_number else None
         version['next_release_test_plan'] = github.get_test_plan_url(version['next_release'])
+        version['project'] = 'https://github.com/orgs/ansible/projects/{}'.format(
+            github.get_project_by_name('Ansible Tower {}'.format(version['next_release']))['number']
+        )
 
     return flask.render_template('jenkins/releases.html', versions=versions, results=results)
