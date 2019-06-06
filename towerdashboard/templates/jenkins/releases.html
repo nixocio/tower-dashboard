@@ -40,6 +40,7 @@
     {% if loop.index == 1 %}
     <a href="{{ version.spreadsheet_url }}">Tower {{ version.next_release[:3] }} Feature Planning</a> -
     {% endif %}
+    <a href="{{ version.project }}">Ansible Project</a> -
     {% if version.next_release_test_plan %}
         <a href="{{ version.next_release_test_plan }}">Test Plan</a>
     {% else %}
