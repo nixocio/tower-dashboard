@@ -76,19 +76,22 @@ def results():
         tower_query = 'SELECT id FROM tower_versions WHERE code = "devel"'
     else:
         tower_query = 'SELECT id FROM tower_versions WHERE code = "%s"' % payload['tower'][0:3]
-    ansible_query = 'SELECT id FROM ansible_versions WHERE version = "%s"' % payload['ansible']
+    if 'ansible' in payload:
+        ansible_query = 'SELECT id FROM ansible_versions WHERE version = "%s"' % payload['ansible']
     os_query = 'SELECT id FROM os_versions WHERE version = "%s"' % payload['os']
 
     db_access = db.get_db()
 
-    db_access.execute(
-        'DELETE FROM results WHERE tower_id = (%s) AND ansible_id = (%s) AND os_id = (%s)' % (tower_query, ansible_query, os_query)
-    )
-    db_access.commit()
+    if 'ansible' in payload:
+        _del_query = 'DELETE FROM results WHERE tower_id = (%s) AND ansible_id = (%s) AND os_id = (%s)' % (tower_query, ansible_query, os_query)
+        _ins_query = 'INSERT INTO results (tower_id, ansible_id, os_id, status, url) VALUES ((%s), (%s), (%s), "%s", "%s")' % (tower_query, ansible_query, os_query, payload['status'], payload['url'])
+    else:
+        _del_query = 'DELETE FROM results WHERE tower_id = (%s) AND os_id = (%s)' % (tower_query, os_query)
+        _ins_query = 'INSERT INTO results (tower_id, os_id, status, url) VALUES ((%s), (%s), "%s", "%s")' % (tower_query, os_query, payload['status'], payload['url'])
 
-    db_access.execute(
-        'INSERT INTO results (tower_id, ansible_id, os_id, status, url) VALUES ((%s), (%s), (%s), "%s", "%s")' % (tower_query, ansible_query, os_query, payload['status'], payload['url'])
-    )
+    db_access.execute(_del_query)
+    db_access.commit()
+    db_access.execute(_ins_query)
     db_access.commit()
 
     return flask.Response(
@@ -133,17 +136,29 @@ def releases():
     versions = db_access.execute(versions_query).fetchall()
     versions = db.format_fetchall(versions)
 
-    results_query = 'SELECT tv.id, tv.version, av.version as "ansible", ov.version as "os", ov.description as "os_description", res.status, res.created_at as "res_created_at", res.url FROM tower_versions tv JOIN tower_os toos ON tv.id = toos.tower_id JOIN os_versions ov on toos.os_id = ov.id JOIN tower_ansible ta ON tv.id = ta.tower_id JOIN ansible_versions av ON av.id = ta.ansible_id LEFT JOIN results res ON (res.tower_id = tv.id AND res.os_id = ov.id AND res.ansible_id = av.id) ORDER BY tv.version, ov.id, av.id'
+    results_query = 'SELECT tv.id, tv.version, av.version as "ansible", ov.version as "os", ov.description as "os_description", res.status, res.created_at as "res_created_at", res.url FROM tower_versions tv JOIN tower_os toos ON tv.id = toos.tower_id JOIN os_versions ov on toos.os_id = ov.id AND ov.version != "OpenShift" AND ov.version != "Artifacts" JOIN tower_ansible ta ON tv.id = ta.tower_id JOIN ansible_versions av ON av.id = ta.ansible_id LEFT JOIN results res ON (res.tower_id = tv.id AND res.os_id = ov.id AND res.ansible_id = av.id) ORDER BY tv.version, ov.id, av.id'
     results = db_access.execute(results_query).fetchall()
     results = db.format_fetchall(results)
+
+    misc_query = 'SELECT tv.id, tv.version, ov.version as "os", ov.description as "os_description", res.status, res.created_at as "res_created_at", res.url FROM tower_versions tv JOIN tower_os toos ON tv.id = toos.tower_id JOIN os_versions ov on toos.os_id = ov.id AND (ov.version == "OpenShift" OR ov.version == "Artifacts") LEFT JOIN results res ON (res.tower_id = tv.id AND res.os_id = ov.id) ORDER BY tv.version, ov.id'
+    misc_results = db_access.execute(misc_query).fetchall()
+    misc_results = db.format_fetchall(misc_results)
 
     branches = github.get_branches()
     milestones = github.get_milestones()
 
-    now = datetime.now()
     for result in results:
         if result['res_created_at']:
-            delta = now - datetime.strptime(result['res_created_at'], '%Y-%m-%d %H:%M:%S')
+            delta = datetime.now() - datetime.strptime(
+                result['res_created_at'], '%Y-%m-%d %H:%M:%S'
+            )
+            result['freshness'] = delta.days
+
+    for result in misc_results:
+        if result['res_created_at']:
+            delta = datetime.now() - datetime.strptime(
+                result['res_created_at'], '%Y-%m-%d %H:%M:%S'
+            )
             result['freshness'] = delta.days
 
     for version in versions:
@@ -165,4 +180,7 @@ def releases():
             github.get_project_by_name('Ansible Tower {}'.format(version['next_release']))['number']
         )
 
-    return flask.render_template('jenkins/releases.html', versions=versions, results=results)
+    return flask.render_template(
+        'jenkins/releases.html', versions=versions, results=results,
+        misc_results=misc_results
+    )

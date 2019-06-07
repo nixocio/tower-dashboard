@@ -35,6 +35,8 @@ OS_VERSIONS = [
     {'name': 'ol-7.6-x86_64', 'desc': 'Oracle Linux 7.6', 'family': 'RHEL'},
     {'name': 'ubuntu-16.04-x86_64', 'desc': 'Ubuntu 16.04', 'family': 'Ubuntu'},  # noqa
     {'name': 'ubuntu-14.04-x86_64', 'desc': 'Ubuntu 14.04', 'family': 'Ubuntu'},  # noqa
+    {'name': 'OpenShift', 'desc': 'OpenShift', 'family': 'misc'},  # noqa
+    {'name': 'Artifacts', 'desc': 'Artifacts', 'family': 'misc'},  # noqa
 ]
 
 # Taken from: https://access.redhat.com/support/policy/updates/ansible-tower
@@ -85,6 +87,8 @@ TOWER_OS = [
     {'tower': 'In Development', 'os': 'rhel-7.4-x86_64'},
     {'tower': 'In Development', 'os': 'centos-7.latest-x86_64'},
     {'tower': 'In Development', 'os': 'ol-7.6-x86_64'},
+    {'tower': 'In Development', 'os': 'OpenShift'},
+    {'tower': 'In Development', 'os': 'Artifacts'},
 
     {'tower': 'Release 3.5', 'os': 'rhel-8.0-x86_64'},
     {'tower': 'Release 3.5', 'os': 'rhel-7.6-x86_64'},
@@ -93,6 +97,8 @@ TOWER_OS = [
     {'tower': 'Release 3.5', 'os': 'centos-7.latest-x86_64'},
     {'tower': 'Release 3.5', 'os': 'ol-7.6-x86_64'},
     {'tower': 'Release 3.5', 'os': 'ubuntu-16.04-x86_64'},
+    {'tower': 'Release 3.5', 'os': 'OpenShift'},
+    {'tower': 'Release 3.5', 'os': 'Artifacts'},
 
     {'tower': 'Release 3.4', 'os': 'rhel-7.6-x86_64'},
     {'tower': 'Release 3.4', 'os': 'rhel-7.5-x86_64'},
@@ -100,6 +106,8 @@ TOWER_OS = [
     {'tower': 'Release 3.4', 'os': 'centos-7.latest-x86_64'},
     {'tower': 'Release 3.4', 'os': 'ol-7.6-x86_64'},
     {'tower': 'Release 3.4', 'os': 'ubuntu-16.04-x86_64'},
+    {'tower': 'Release 3.4', 'os': 'OpenShift'},
+    {'tower': 'Release 3.4', 'os': 'Artifacts'},
 
     {'tower': 'Release 3.3', 'os': 'rhel-7.6-x86_64'},
     {'tower': 'Release 3.3', 'os': 'rhel-7.5-x86_64'},
@@ -108,6 +116,8 @@ TOWER_OS = [
     {'tower': 'Release 3.3', 'os': 'ol-7.6-x86_64'},
     {'tower': 'Release 3.3', 'os': 'ubuntu-16.04-x86_64'},
     {'tower': 'Release 3.3', 'os': 'ubuntu-14.04-x86_64'},
+    {'tower': 'Release 3.3', 'os': 'OpenShift'},
+    {'tower': 'Release 3.3', 'os': 'Artifacts'},
 ]
 
 TOWER_ANSIBLE = [
