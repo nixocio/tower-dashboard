@@ -28,6 +28,7 @@ ANSIBLE_VERSIONS = [
 
 OS_VERSIONS = [
     {'name': 'rhel-8.0-x86_64', 'desc': 'RHEL 8.0', 'family': 'RHEL'},
+    {'name': 'rhel-7.7-x86_64', 'desc': 'RHEL 7.7', 'family': 'RHEL'},
     {'name': 'rhel-7.6-x86_64', 'desc': 'RHEL 7.6', 'family': 'RHEL'},
     {'name': 'rhel-7.5-x86_64', 'desc': 'RHEL 7.5', 'family': 'RHEL'},
     {'name': 'rhel-7.4-x86_64', 'desc': 'RHEL 7.4', 'family': 'RHEL'},
@@ -82,6 +83,7 @@ TOWER_VERSIONS = [
 
 TOWER_OS = [
     {'tower': 'In Development', 'os': 'rhel-8.0-x86_64'},
+    {'tower': 'In Development', 'os': 'rhel-7.7-x86_64'},
     {'tower': 'In Development', 'os': 'rhel-7.6-x86_64'},
     {'tower': 'In Development', 'os': 'rhel-7.5-x86_64'},
     {'tower': 'In Development', 'os': 'rhel-7.4-x86_64'},
@@ -91,6 +93,7 @@ TOWER_OS = [
     {'tower': 'In Development', 'os': 'Artifacts'},
 
     {'tower': 'Release 3.5', 'os': 'rhel-8.0-x86_64'},
+    {'tower': 'Release 3.5', 'os': 'rhel-7.7-x86_64'},
     {'tower': 'Release 3.5', 'os': 'rhel-7.6-x86_64'},
     {'tower': 'Release 3.5', 'os': 'rhel-7.5-x86_64'},
     {'tower': 'Release 3.5', 'os': 'rhel-7.4-x86_64'},
@@ -100,6 +103,7 @@ TOWER_OS = [
     {'tower': 'Release 3.5', 'os': 'OpenShift'},
     {'tower': 'Release 3.5', 'os': 'Artifacts'},
 
+    {'tower': 'Release 3.4', 'os': 'rhel-7.7-x86_64'},
     {'tower': 'Release 3.4', 'os': 'rhel-7.6-x86_64'},
     {'tower': 'Release 3.4', 'os': 'rhel-7.5-x86_64'},
     {'tower': 'Release 3.4', 'os': 'rhel-7.4-x86_64'},
@@ -109,6 +113,7 @@ TOWER_OS = [
     {'tower': 'Release 3.4', 'os': 'OpenShift'},
     {'tower': 'Release 3.4', 'os': 'Artifacts'},
 
+    {'tower': 'Release 3.3', 'os': 'rhel-7.7-x86_64'},
     {'tower': 'Release 3.3', 'os': 'rhel-7.6-x86_64'},
     {'tower': 'Release 3.3', 'os': 'rhel-7.5-x86_64'},
     {'tower': 'Release 3.3', 'os': 'rhel-7.4-x86_64'},
