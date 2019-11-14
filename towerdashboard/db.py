@@ -50,7 +50,7 @@ def init_db():
     with current_app.open_resource('schema.sql') as f:
         db.executescript(f.read().decode('utf8'))
 
-    with tempfile.NamedTemporaryFile() as _tempfile:
+    with tempfile.NamedTemporaryFile(mode='w+') as _tempfile:
         for version in base.ANSIBLE_VERSIONS:
             _tempfile.write(
                 'INSERT INTO ansible_versions (version) VALUES ("%s");\n' % version['name']
@@ -70,7 +70,7 @@ def init_db():
         with current_app.open_resource(_tempfile.name) as f:
             db.executescript(f.read().decode('utf8'))
 
-    with tempfile.NamedTemporaryFile() as _tempfile:
+    with tempfile.NamedTemporaryFile(mode='w+') as _tempfile:
         for config in base.TOWER_OS:
             tower_query = 'SELECT id FROM tower_versions WHERE version = "%s"' % config['tower']
             os_query = 'SELECT id FROM os_versions WHERE version = "%s"' % config['os']
@@ -108,7 +108,7 @@ def format_fetchall(rows):
 
     _rows = [dict(row) for row in rows]
     for row in _rows:
-        for key, value in row.iteritems():
+        for key, value in row.items():
             if type(row[key]) is datetime.datetime:
                 row[key] = str(row[key])[:19]
 
