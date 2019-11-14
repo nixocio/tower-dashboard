@@ -63,22 +63,10 @@ def get_test_plan_url(version):
     return None
 
 
-def get_milestones():
-
-    url = '{}/repos/{}/milestones'.format(
-        API_GITHUB, current_app.config.get('TOWERQA_REPO')[:-3]
+def get_issues_information(project, custom_query=None):
+    url = '{}/search/issues?q=is:open+is:issue+project:{}'.format(
+        API_GITHUB, project
     )
-    milestones = github_request(url).json()
-    _milestones = {}
-    for milestone in milestones:
-        _milestones[milestone['title']] = milestone['number']
-
-    return _milestones
-
-
-def get_issues_information(milestone):
-    url = '{}/repos/{}/issues?state=open&milestone={}&per_page=100'.format(
-        API_GITHUB, current_app.config.get('TOWERQA_REPO')[:-3], milestone
-    )
-
+    if custom_query:
+        url += '+{}'.format(custom_query)
     return github_request(url).json()

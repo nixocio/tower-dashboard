@@ -101,29 +101,28 @@ def results():
     )
 
 
-def serialize_issue(milestone_number, milestone_name):
-    issues = github.get_issues_information(milestone_number)
+def serialize_issues(project):
+    total_count = github.get_issues_information(project)['total_count']
+    result = github.get_issues_information(project, 'label:state:needs_test')
 
     needs_test_issues = []
-    for issue in issues:
-        for label in issue['labels']:
-            if label['name'] == 'state:needs_test':
-                needs_test_issues.append({
-                    'title': issue['title'],
-                    'url': issue['html_url'],
-                    'updated_at': issue['updated_at'],
-                    'assignee': ', '.join([i['login'] for i in issue['assignees']])
-                })
+    for issue in result['items']:
+        needs_test_issues.append({
+            'title': issue['title'],
+            'url': issue['html_url'],
+            'updated_at': issue['updated_at'],
+            'assignee': ', '.join([i['login'] for i in issue['assignees']])
+        })
 
     return {
-        'count': len(issues),
-        'html_url': 'https://github.com/{}/issues?q=is:open+milestone:{}'.format(
-            current_app.config.get('TOWERQA_REPO')[:-3], milestone_name
+        'count': total_count,
+        'html_url': 'https://github.com/issues?q=is:open+is:issue+project:{}'.format(
+            project
         ),
         'needs_test_count': len(needs_test_issues),
         'needs_test_issues': needs_test_issues,
-        'needs_test_html_url': 'https://github.com/{}/issues?q=is:open+milestone:{}+label:state:needs_test'.format(
-            current_app.config.get('TOWERQA_REPO')[:-3], milestone_name
+        'needs_test_html_url': 'https://github.com/issues?q=is:open+is:issue+project:{}+label:state:needs_test'.format(
+            project
         )
     }
 
@@ -145,7 +144,6 @@ def releases():
     misc_results = db.format_fetchall(misc_results)
 
     branches = github.get_branches()
-    milestones = github.get_milestones()
 
     for result in results:
         if result['res_created_at']:
@@ -173,12 +171,10 @@ def releases():
             version['next_release'] = current_app.config.get('DEVEL_VERSION_NAME', 'undef')
             milestone_name = 'release_{}'.format(version['next_release'])
 
-        milestone_number = milestones.get(milestone_name)
-        version['issues'] = serialize_issue(milestone_number, milestone_name) if milestone_number else None
         version['next_release_test_plan'] = github.get_test_plan_url(version['next_release'])
-        version['project'] = 'https://github.com/orgs/ansible/projects/{}'.format(
-            github.get_project_by_name('Ansible Tower {}'.format(version['next_release']))['number']
-        )
+        project_number = github.get_project_by_name('Ansible Tower {}'.format(version['next_release']))['number']
+        version['project'] = 'https://github.com/orgs/ansible/projects/{}'.format(project_number)
+        version['issues'] = serialize_issues('ansible/{}'.format(project_number))
 
     return flask.render_template(
         'jenkins/releases.html', versions=versions, results=results,
