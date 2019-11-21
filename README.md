@@ -6,7 +6,28 @@ A set of Tower QE dashboard that allows to have better insight of what is going 
 
 ## Install
 
-### Production
+### Setting up Fedora to build the production RPMs
+
+In order to build the production RPM you need to install the following
+packages:
+
+```console
+$ sudo dnf install mock rpm-build rpmdevtools
+```
+
+Then add your user to the mock group:
+
+```console
+$ sudo usermod -a -G mock "${USER}"
+```
+
+After that you can proceed to the initial production deployment if you
+deploying to production for the first time, or updating production deployment
+if you are updating an existing production environment.
+
+Note: this was tested on Fedora 30.
+
+### Initial Production Deployment
 
 To be able to setup a production environment, few steps are required.
 
@@ -16,7 +37,12 @@ To be able to setup a production environment, few steps are required.
   #> ./contrib/packaging/build_rpm.sh
   ```
 
-  2. scp the resulting rpm package to your production system
+  2. By default, the script above will place the resulting RPM on `/tmp`. That
+     said, scp the resulting RPM package to the production system, for example:
+
+  ```console
+  $ scp /tmp/tower-dashboard-*.noarch.rpm user@remotehost:
+  ```
 
   3. On the production server
 
@@ -50,9 +76,35 @@ To be able to setup a production environment, few steps are required.
   </VirtualHost>
   ```
 
- 5. Edit `/etc/tower_dashboard/settings.py`
+ 5. Edit `/etc/tower-dashboard/settings.py`
 
  6. Restart httpd
+
+### Updating Production Deployment
+
+To be able to update a production environment, few steps are required:
+
+  1. Locally build the `tower-dashboard` rpm. See previous section for more information.
+
+  2. By default, the script above will place the resulting RPM on `/tmp`. That
+     said, scp the resulting RPM package to the production system, for example:
+
+  ```console
+  $ scp /tmp/tower-dashboard-*.noarch.rpm user@remotehost:
+  ```
+
+  3. On the production server install the updated RPM:
+
+  ```bash
+  #> yum -y install /path/to/updated-tower-dashboard.rpm
+  ```
+
+  4. Remove/rename old database. Be aware that the default path to the database
+     is on `/tmp/towerdashboard.sqlite` but since on production it is running
+     on httpd managed by systemd, then the database path may end up being
+     something like `/tmp/systemd-private-*-httpd.service-*/tmp/towerdashboard.sqlite`.
+
+  5. Restart httpd
 
 ### Development
 
