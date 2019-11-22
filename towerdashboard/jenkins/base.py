@@ -101,6 +101,29 @@ def results():
     )
 
 
+@jenkins.route('/sign_off_jobs', strict_slashes=False, methods=['POST'])
+def sign_off_jobs():
+    payload = flask.request.json
+    if 'devel' == payload['tower']:
+        tower_query = 'SELECT id FROM tower_versions WHERE code = "devel"'
+    else:
+        tower_query = 'SELECT id FROM tower_versions WHERE code = "%s"' % payload['tower'][0:3]
+    job_query = 'SELECT id FROM sign_off_jobs WHERE tower_id = (%s) AND component = "%s" AND deploy = "%s" AND platform = "%s" AND tls = "%s"' % (tower_query, payload['component'], payload['deploy'], payload['platform'], bool(payload['tls']))
+
+    db_access = db.get_db()
+
+    _update_query = 'UPDATE sign_off_jobs SET status = "%s", url = "%s", created_at = "%s" WHERE id = (%s)' % (payload['status'], payload['url'], datetime.now(), job_query)
+    res = db_access.execute(job_query)
+    db_access.execute(_update_query)
+    db_access.commit()
+
+    return flask.Response(
+      json.dumps({'Inserted': 'ok'}),
+      status=201,
+      content_type='application/json'
+    )
+
+
 def serialize_issues(project):
     total_count = github.get_issues_information(project)['total_count']
     result = github.get_issues_information(project, 'label:state:needs_test')
@@ -143,21 +166,24 @@ def releases():
     misc_results = db_access.execute(misc_query).fetchall()
     misc_results = db.format_fetchall(misc_results)
 
+    sign_off_jobs_query = 'SELECT * from sign_off_jobs;'
+    sign_off_jobs = db_access.execute(sign_off_jobs_query).fetchall()
+    sign_off_jobs = db.format_fetchall(sign_off_jobs)
+
     branches = github.get_branches()
 
-    for result in results:
-        if result['res_created_at']:
-            delta = datetime.now() - datetime.strptime(
-                result['res_created_at'], '%Y-%m-%d %H:%M:%S'
-            )
-            result['freshness'] = delta.days
+    def set_freshness(items, key):
+        for item in items:
+            if item.get(key):
+                delta = datetime.now() - datetime.strptime(
+                    item[key], '%Y-%m-%d %H:%M:%S'
+                )
+                item['freshness'] = delta.days
+        return items
 
-    for result in misc_results:
-        if result['res_created_at']:
-            delta = datetime.now() - datetime.strptime(
-                result['res_created_at'], '%Y-%m-%d %H:%M:%S'
-            )
-            result['freshness'] = delta.days
+    results = set_freshness(results, 'res_created_at')
+    sign_off_jobs = set_freshness(sign_off_jobs, 'created_at')
+    misc_results = set_freshness(misc_results, 'res_created_at')
 
     for version in versions:
         if 'devel' not in version['version'].lower():
@@ -178,5 +204,5 @@ def releases():
 
     return flask.render_template(
         'jenkins/releases.html', versions=versions, results=results,
-        misc_results=misc_results
+        misc_results=misc_results, sign_off_jobs=sign_off_jobs
     )

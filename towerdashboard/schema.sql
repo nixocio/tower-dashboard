@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS tower_versions;
 DROP TABLE IF EXISTS tower_os;
 DROP TABLE IF EXISTS tower_ansible;
 DROP TABLE IF EXISTS results;
+DROP TABLE IF EXISTS sign_off_jobs;
 
 CREATE TABLE ansible_versions (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,6 +47,20 @@ CREATE TABLE results (
   tower_id INTEGER NOT NULL,
   os_id INTEGER NOT NULL,
   ansible_id INTEGER,
+  status TEXT,
+  url TEXT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE sign_off_jobs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tower_id INTEGER NOT NULL,
+  job TEXT NOT NULL,
+  display_name TEXT,
+  component TEXT NOT NULL,
+  deploy TEXT NOT NULL,
+  platform TEXT NOT NULL,
+  tls INTEGER,
   status TEXT,
   url TEXT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP

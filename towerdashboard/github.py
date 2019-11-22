@@ -47,7 +47,6 @@ def get_branches():
         API_GITHUB, current_app.config.get('TOWERQA_REPO')
     )
     branches = github_request(url).json()
-
     return [branch['name'] for branch in branches]
 
 

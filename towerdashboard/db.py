@@ -77,6 +77,22 @@ def init_db():
             _tempfile.write(
                 'INSERT INTO tower_os (tower_id, os_id) VALUES ((%s), (%s));\n' % (tower_query, os_query)
             )
+            if config['os'] in base.SIGN_OFF_PLATFORMS:
+                for item in base.SIGN_OFF_DEPLOYMENTS:
+                    for component in base.SIGN_OFF_COMPONENTS:
+                        if item['deploy'] == 'standalone' and config['os'] == 'OpenShift':
+                            # OpenShift is only ever tested as a cluster, so do not make jobs for this
+                            continue
+                        if component == 'external_database' and config['os'] != 'OpenShift':
+                            # regular cluster usually uses an external db, openshift is only one we need to test this in seperate job
+                            continue
+                        job = 'component_{}_platform_{}_deploy_{}_tls_{}'.format(component, config['os'], item['deploy'], item['tls'])
+                        tls_statement = '(TLS Enabled)'  if item['tls'] else ''
+                        display_name = '{} {} {} {}'.format(config['os'], item['deploy'], component.replace('_', ' '), tls_statement)
+                        display_name = display_name.title()
+                        _tempfile.write(
+                            'INSERT INTO sign_off_jobs (tower_id, job, display_name, component, platform, deploy, tls) VALUES ((%s), "%s", "%s", "%s", "%s", "%s", "%s");\n' % (tower_query, job, display_name, component, config['os'], item['deploy'], item['tls'])
+                        )
 
         for config in base.TOWER_ANSIBLE:
             tower_query = 'SELECT id FROM tower_versions WHERE version = "%s"' % config['tower']
