@@ -177,20 +177,15 @@
     <br/><br/>
     <table class="table table-bordered">
         <thead align="center">
-          <th scope="col">Component</th>
-          <th scope="col">Platform</th>
-          <th scope="col">Deploy</th>
-          <th scope="col">TLS Enabled</th>
+          <th scope="col">Job Name</th>
           <th scope="col">Result</th>
         </thead>
         <tbody>
             {% for job in sign_off_jobs %}
-              {% if job.tower_id == version.id %}
+						<!--I'm filtering this down to 2.9 because showing all ansible versions is a toooon of jobs-->
+              {% if job.tower_id == version.id and '2.9' in job.ansible %}
                 <tr>
-                  <td align="left">{{ job.component.replace('_', ' ').title() }}</td>
-                  <td align="left">{{ job.platform }}</td>
-                  <td align="left">{{ job.deploy.title() }}</td>
-                  <td align="left">{{ job.tls }}</td>
+                  <td align="left">{{ job.display_name }}</td>
                   {% if job.status == 'SUCCESS' %}
                     {% if job.freshness < 2 %}
                     <td align="center"><a href="{{ job.url }}"><img src="{{ url_for('static', filename='green.png') }}"></img></a></td>

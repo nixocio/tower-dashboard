@@ -101,27 +101,56 @@ def results():
     )
 
 
-@jenkins.route('/sign_off_jobs', strict_slashes=False, methods=['POST'])
+@jenkins.route('/sign_off_jobs', strict_slashes=False, methods=['POST', 'GET'])
 def sign_off_jobs():
-    payload = flask.request.json
-    if 'devel' == payload['tower']:
-        tower_query = 'SELECT id FROM tower_versions WHERE code = "devel"'
+    def form_tower_query(tower):
+        if 'devel' == tower:
+            return 'SELECT id FROM tower_versions WHERE code = "devel"'
+        else:
+            return 'SELECT id FROM tower_versions WHERE code = "%s"' % tower[0:3]
+
+    if flask.request.method == 'GET':
+        tower_query = ''
+        for arg in flask.request.args:
+            if arg == 'tower':
+                import pdb; pdb.set_trace()
+                tower_query = form_tower_query(flask.request.args.get(arg))
+            else:
+                return flask.Response(
+                    json.dumps({'Error': 'only able to filter on tower versions'}),
+                    status=400,
+                    content_type='application/json'
+                )
+        if tower_query:
+            job_query = 'SELECT * FROM sign_off_jobs WHERE tower_id = (%s)' % (tower_query)
+        else:
+            job_query = 'SELECT * FROM sign_off_jobs'
+
+        db_access = db.get_db()
+        res = db_access.execute(job_query).fetchall()
+        sign_off_jobs = db.format_fetchall(res)
+
+        return flask.Response(
+            json.dumps(sign_off_jobs),
+            status=200,
+            content_type='application/json'
+        )
     else:
-        tower_query = 'SELECT id FROM tower_versions WHERE code = "%s"' % payload['tower'][0:3]
-    job_query = 'SELECT id FROM sign_off_jobs WHERE tower_id = (%s) AND component = "%s" AND deploy = "%s" AND platform = "%s" AND tls = "%s"' % (tower_query, payload['component'], payload['deploy'], payload['platform'], bool(payload['tls']))
+        payload = flask.request.json
+        tower_query = form_tower_query(payload['tower'])
+        job_query = 'SELECT id FROM sign_off_jobs WHERE tower_id = (%s) AND component = "%s" AND deploy = "%s" AND platform = "%s" AND tls = "%s" AND ansible = "%s"' % (tower_query, payload['component'], payload['deploy'], payload['platform'], bool(payload['tls']), payload['ansible'])
 
-    db_access = db.get_db()
+        db_access = db.get_db()
 
-    _update_query = 'UPDATE sign_off_jobs SET status = "%s", url = "%s", created_at = "%s" WHERE id = (%s)' % (payload['status'], payload['url'], datetime.now(), job_query)
-    res = db_access.execute(job_query)
-    db_access.execute(_update_query)
-    db_access.commit()
+        _update_query = 'UPDATE sign_off_jobs SET status = "%s", url = "%s", created_at = "%s" WHERE id = (%s)' % (payload['status'], payload['url'], datetime.now(), job_query)
+        db_access.execute(_update_query)
+        db_access.commit()
 
-    return flask.Response(
-      json.dumps({'Inserted': 'ok'}),
-      status=201,
-      content_type='application/json'
-    )
+        return flask.Response(
+          json.dumps({'Inserted': 'ok'}),
+          status=201,
+          content_type='application/json'
+        )
 
 
 def serialize_issues(project):

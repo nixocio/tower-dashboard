@@ -63,5 +63,6 @@ CREATE TABLE sign_off_jobs (
   tls INTEGER,
   status TEXT,
   url TEXT,
+  ansible TEXT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
