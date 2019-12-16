@@ -136,8 +136,19 @@ def sign_off_jobs():
         )
     else:
         payload = flask.request.json
+        required_keys = ['tower', 'component', 'deploy', 'platform', 'tls', 'fips', 'ansible']
+        missing_keys = []
+        for key in required_keys:
+            if key not in payload:
+                missing_keys.append(key)
+        if missing_keys:
+            return flask.Response(
+            json.dumps({'Error': 'Missing required keys/value pairs for {}'.format(missing_keys)}),
+            status=400,
+            content_type='application/json'
+            )
         tower_query = form_tower_query(payload['tower'])
-        job_query = 'SELECT id FROM sign_off_jobs WHERE tower_id = (%s) AND component = "%s" AND deploy = "%s" AND platform = "%s" AND tls = "%s" AND ansible = "%s"' % (tower_query, payload['component'], payload['deploy'], payload['platform'], bool(payload['tls']), payload['ansible'])
+        job_query = 'SELECT id FROM sign_off_jobs WHERE tower_id = (%s) AND component = "%s" AND deploy = "%s" AND platform = "%s" AND tls = "%s" AND fips = "%s" AND ansible = "%s"' % (tower_query, payload['component'], payload['deploy'], payload['platform'], payload['tls'], payload['fips'], payload['ansible'])
         return_info_query = 'SELECT display_name, created_at FROM sign_off_jobs WHERE id = (%s)' % (job_query)
 
         db_access = db.get_db()
@@ -209,12 +220,12 @@ def releases():
     sign_off_jobs = db.format_fetchall(sign_off_jobs)
 
     unstable_jobs_query = 'SELECT * from sign_off_jobs WHERE status = "UNSTABLE";'
-    unstable_jobs = db_access.execute(sign_off_jobs_query).fetchall()
-    unstable_jobs = db.format_fetchall(sign_off_jobs)
+    unstable_jobs = db_access.execute(unstable_jobs_query).fetchall()
+    unstable_jobs = db.format_fetchall(unstable_jobs)
 
     failed_jobs_query = 'SELECT * from sign_off_jobs WHERE status = "FAILED";'
-    failed_jobs = db_access.execute(sign_off_jobs_query).fetchall()
-    failed_jobs = db.format_fetchall(sign_off_jobs)
+    failed_jobs = db_access.execute(failed_jobs_query).fetchall()
+    failed_jobs = db.format_fetchall(failed_jobs)
 
     branches = github.get_branches()
 

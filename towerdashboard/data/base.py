@@ -14,6 +14,7 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
+import itertools
 
 
 ANSIBLE_VERSIONS = [
@@ -179,10 +180,12 @@ SIGN_OFF_PLATFORMS = [
 ]
 
 SIGN_OFF_DEPLOYMENTS = [
-    {'deploy': 'cluster', 'tls': True},
-    {'deploy': 'cluster', 'tls': False},
-    {'deploy': 'standalone', 'tls': True},
-    {'deploy': 'standalone', 'tls': False}
+    {'deploy': deploy, 'tls': tls, 'fips': fips}
+    for deploy, tls, fips in itertools.product(
+        ('standalone', 'cluster'),
+        ('true', 'false'),
+        ('true', 'false'),
+    )
 ]
 
 SIGN_OFF_COMPONENTS = [

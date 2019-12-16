@@ -85,15 +85,19 @@ def init_db():
                             if item['deploy'] == 'standalone' and config['os'] == 'OpenShift':
                                 # OpenShift is only ever tested as a cluster, so do not make jobs for this
                                 continue
+                            if item['fips'] == 'true' and config['os'] == 'OpenShift':
+                                # OpenShift deploys do not currently support FIPS, so do not make jobs for this
+                                continue
                             if component == 'external_database' and config['os'] != 'OpenShift':
                                 # regular cluster usually uses an external db, openshift is only one we need to test this in seperate job
                                 continue
-                            job = 'component_{}_platform_{}_deploy_{}_tls_{}_ansible_{}'.format(component, config['os'], item['deploy'], item['tls'], ansible_version)
-                            tls_statement = '(TLS Enabled)'  if item['tls'] else ''
-                            display_name = '{} {} {} {} w/ ansible {}'.format(config['os'], item['deploy'], component.replace('_', ' '), tls_statement, ansible_version)
+                            job = 'component_{}_platform_{}_deploy_{}_tls_{}_fips_{}_ansible_{}'.format(component, config['os'], item['deploy'], item['tls'], item['fips'], ansible_version)
+                            tls_statement = '(TLS Enabled)'  if item['tls'] == 'true' else ''
+                            fips_statement = '(FIPS Enabled)'  if item['fips'] == 'true' else ''
+                            display_name = '{} {} {} {} {} w/ ansible {}'.format(config['os'], item['deploy'], component.replace('_', ' '), tls_statement, fips_statement, ansible_version)
                             display_name = display_name.title()
                             _tempfile.write(
-                                'INSERT INTO sign_off_jobs (tower_id, job, display_name, component, platform, deploy, tls, ansible) VALUES ((%s), "%s", "%s", "%s", "%s", "%s", "%s", "%s");\n' % (tower_query, job, display_name, component, config['os'], item['deploy'], item['tls'], ansible_version)
+                                'INSERT INTO sign_off_jobs (tower_id, job, display_name, component, platform, deploy, tls, fips, ansible) VALUES ((%s), "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s");\n' % (tower_query, job, display_name, component, config['os'], item['deploy'], item['tls'], item['fips'], ansible_version)
                             )
 
         for config in base.TOWER_ANSIBLE:

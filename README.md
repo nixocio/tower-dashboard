@@ -161,12 +161,16 @@ tower-dashboard should be running on your local loop on port 5000 (`http://127.0
 
 ### Top level results
 
-FIXME
+To update results of of entire os/anisble pipelines (shown in matrix) or the Openshift/Artifacts results, have pipeline POST to the dashboard in the following manner:
+
+```bash
+curl -d '{"os":"rhel-7.7-x86_64", "ansible":"devel", "tower": "devel", "status": "SUCCESS", "url": "https://myjobrunnner.net/job/1"}' -H 'Content-type: application/json' -X POST http://127.0.0.1:5000/jenkins/results
+```
 
 ### Sign off jobs
 To update results for the sign off jobs displayed in the lower portion of each release tab, have jobs POST to the dashboard in the following manner:
 ```bash
-curl -d '{"tower":"devel", "url":"https://your.job.runner.com/job/1", "component":"install", "status":"FAILURE", "tls":0, "deploy":"standalone", "platform":"rhel-7.7-x86_64", "ansible": "devel"}' -H 'Content-t
+curl -d '{"tower":"devel", "url":"https://your.job.runner.com/job/1", "component":"install", "status":"FAILURE", "tls":"true", "fips":"false", "deploy":"standalone", "platform":"rhel-7.7-x86_64", "ansible": "devel"}' -H 'Content-t
 ype: application/json' -X POST http://127.0.0.1:5000/jenkins/sign_off_jobs
 ```
 This will correlate it to one of the jobs created at database initializaion time and update the latest result.
@@ -178,7 +182,9 @@ These are unique on combination of the parameters:
 
 1)  `"deploy"` matching a value of `"deploy"` in the list of `SIGN_OFF_DEPLOYMENTS` found in the [base data used](https://github.com/ansible/tower-dashboard/blob/master/towerdashboard/data/base.py), e.g. `"standalone"` or `"cluster"`.
 
-1)  `"tls"` matching a value of `"tls"` in the list of `SIGN_OFF_DEPLOYMENTS` found in the [base data used](https://github.com/ansible/tower-dashboard/blob/master/towerdashboard/data/base.py), e.g. `True` or `False`.
+1)  `"tls"` matching a value of `"tls"` in the list of `SIGN_OFF_DEPLOYMENTS` found in the [base data used](https://github.com/ansible/tower-dashboard/blob/master/towerdashboard/data/base.py), e.g. `'true'` or `'false'`.
+
+1)  `"fips"` matching a value of `"tls"` in the list of `SIGN_OFF_DEPLOYMENTS` found in the [base data used](https://github.com/ansible/tower-dashboard/blob/master/towerdashboard/data/base.py), e.g. `'true'` or `'false'`.
 
 1)  `"platform"` matching an item in the list of `SIGN_OFF_PLATFORMS` found in the [base data used](https://github.com/ansible/tower-dashboard/blob/master/towerdashboard/data/base.py), e.g. `rhel-7.7-x86_64` or `OpenShift`.
 
