@@ -58,17 +58,17 @@
     {% if not version.issues %}
     No issue marked with the <b>release_{{ version.next_release }}</b> milestone
     {% elif version.issues.needs_test_count > 0 %}
-<div id="accordion">
+<div id="accordionIssues">
   <div class="card">
-    <div class="card-header" id="headingOne">
+    <div class="card-header" id="headingIssues">
       <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseIssues" aria-expanded="true" aria-controls="collapseIssues">
          Click to expand or hide the list of issues in with label <i>state:needs_test</i></br></br>
         </button>
       </h5>
     </div>
 
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+    <div id="collapseIssues" class="collapse show" aria-labelledby="headingIssues" data-parent="#accordionIssues">
       <div class="card-body">
         <table class="table table-bordered" style="border-collapse: collapse">
           <thead>
@@ -204,7 +204,6 @@
         </thead>
         <tbody>
             {% for job in unstable_jobs %}
-						 <! ----------- Unstable jobs are allready filtered to only show fresh results ---------- !>
               {% if job.tower_id == version.id %}
                 <tr>
                   <td align="left">{{ job.display_name }}</td>
@@ -226,7 +225,6 @@
         </thead>
         <tbody>
             {% for job in failed_jobs %}
-						 <! ----------- Failed jobs are allready filtered to only show fresh results ---------- !>
               {% if job.tower_id == version.id %}
                 <tr>
                   <td align="left">{{ job.display_name }}</td>
@@ -239,18 +237,18 @@
     </table>
     <br/><br/>
 
-<div id="accordion">
+<div id="accordionSignOff">
   <div class="card">
-    <div class="card-header" id="headingOne">
+    <div class="card-header" id="headingSignOff">
       <h5 class="mb-0">
         <h4>All Sign Off Jobs for Release</h4>
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseSignOff" aria-expanded="true" aria-controls="collapseSignOff">
 			  click to hide or expand
         </button>
       </h5>
     </div>
 
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+    <div id="collapseSignOff" class="collapse show" aria-labelledby="headingSignOff" data-parent="#accordionSignOff">
       <div class="card-body">
         <table class="table table-bordered">
             <thead align="center">
