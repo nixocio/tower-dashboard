@@ -113,7 +113,6 @@ def sign_off_jobs():
         tower_query = ''
         for arg in flask.request.args:
             if arg == 'tower':
-                import pdb; pdb.set_trace()
                 tower_query = form_tower_query(flask.request.args.get(arg))
             else:
                 return flask.Response(
@@ -139,18 +138,28 @@ def sign_off_jobs():
         payload = flask.request.json
         tower_query = form_tower_query(payload['tower'])
         job_query = 'SELECT id FROM sign_off_jobs WHERE tower_id = (%s) AND component = "%s" AND deploy = "%s" AND platform = "%s" AND tls = "%s" AND ansible = "%s"' % (tower_query, payload['component'], payload['deploy'], payload['platform'], bool(payload['tls']), payload['ansible'])
+        return_info_query = 'SELECT display_name, created_at FROM sign_off_jobs WHERE id = (%s)' % (job_query)
 
         db_access = db.get_db()
 
         _update_query = 'UPDATE sign_off_jobs SET status = "%s", url = "%s", created_at = "%s" WHERE id = (%s)' % (payload['status'], payload['url'], datetime.now(), job_query)
         db_access.execute(_update_query)
+        res = db_access.execute(return_info_query).fetchall()
+        updated_job = db.format_fetchall(res)
         db_access.commit()
 
-        return flask.Response(
-          json.dumps({'Inserted': 'ok'}),
-          status=201,
-          content_type='application/json'
-        )
+        if updated_job:
+            return flask.Response(
+            json.dumps(updated_job),
+            status=200,
+            content_type='application/json'
+            )
+        else:
+            return flask.Response(
+            json.dumps({'Error': 'No job found to update'}),
+            status=400,
+            content_type='application/json'
+            )
 
 
 def serialize_issues(project):
@@ -199,19 +208,32 @@ def releases():
     sign_off_jobs = db_access.execute(sign_off_jobs_query).fetchall()
     sign_off_jobs = db.format_fetchall(sign_off_jobs)
 
+    unstable_jobs_query = 'SELECT * from sign_off_jobs WHERE status = "UNSTABLE";'
+    unstable_jobs = db_access.execute(sign_off_jobs_query).fetchall()
+    unstable_jobs = db.format_fetchall(sign_off_jobs)
+
+    failed_jobs_query = 'SELECT * from sign_off_jobs WHERE status = "FAILED";'
+    failed_jobs = db_access.execute(sign_off_jobs_query).fetchall()
+    failed_jobs = db.format_fetchall(sign_off_jobs)
+
     branches = github.get_branches()
 
-    def set_freshness(items, key):
+    def set_freshness(items, key, discard_old=False):
         for item in items:
             if item.get(key):
                 delta = datetime.now() - datetime.strptime(
                     item[key], '%Y-%m-%d %H:%M:%S'
                 )
                 item['freshness'] = delta.days
+        if discard_old:
+            items = [ x for x in items if x['freshness'] < 2 ]
+
         return items
 
     results = set_freshness(results, 'res_created_at')
     sign_off_jobs = set_freshness(sign_off_jobs, 'created_at')
+    unstable_jobs = set_freshness(unstable_jobs, 'created_at', discard_old=True)
+    failed_jobs = set_freshness(failed_jobs, 'created_at', discard_old=True)
     misc_results = set_freshness(misc_results, 'res_created_at')
 
     for version in versions:
@@ -232,6 +254,11 @@ def releases():
         version['issues'] = serialize_issues('ansible/{}'.format(project_number))
 
     return flask.render_template(
-        'jenkins/releases.html', versions=versions, results=results,
-        misc_results=misc_results, sign_off_jobs=sign_off_jobs
+        'jenkins/releases.html',
+        versions=versions,
+        results=results,
+        misc_results=misc_results,
+        sign_off_jobs=sign_off_jobs,
+        unstable_jobs=unstable_jobs,
+        failed_jobs=failed_jobs
     )

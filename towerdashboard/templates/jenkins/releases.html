@@ -172,7 +172,51 @@
         </tbody>
     </table>
     <br/><br/>
-    <h4>Sign Off Jobs</h4>
+    <h4>Unstable Jobs</h4>
+    <hr/><hr/>
+    <br/><br/>
+    <table class="table table-bordered">
+        <thead align="center">
+          <th scope="col">Job Name</th>
+          <th scope="col">Result</th>
+        </thead>
+        <tbody>
+            {% for job in unstable_jobs %}
+						 <! ----------- Unstable jobs are allready filtered to only show fresh results ---------- !>
+              {% if job.tower_id == version.id %}
+                <tr>
+                  <td align="left">{{ job.display_name }}</td>
+                  <td align="center"><a href="{{ job.url }}"><img src="{{ url_for('static', filename='yellow.png') }}"></img></a></td>
+                  </td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <br/><br/>
+    <h4>Failed Jobs</h4>
+    <hr/><hr/>
+    <br/><br/>
+    <table class="table table-bordered">
+        <thead align="center">
+          <th scope="col">Job Name</th>
+          <th scope="col">Result</th>
+        </thead>
+        <tbody>
+            {% for job in failed_jobs %}
+						 <! ----------- Failed jobs are allready filtered to only show fresh results ---------- !>
+              {% if job.tower_id == version.id %}
+                <tr>
+                  <td align="left">{{ job.display_name }}</td>
+                   <td align="center"><a href="{{ job.url }}"><img src="{{ url_for('static', filename='red.png') }}"></img></a></td>
+                  </td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <br/><br/>
+    <h4> All Sign Off Jobs</h4>
     <hr/><hr/>
     <br/><br/>
     <table class="table table-bordered">
@@ -182,8 +226,7 @@
         </thead>
         <tbody>
             {% for job in sign_off_jobs %}
-						<!--I'm filtering this down to 2.9 because showing all ansible versions is a toooon of jobs-->
-              {% if job.tower_id == version.id and '2.9' in job.ansible %}
+              {% if job.tower_id == version.id %}
                 <tr>
                   <td align="left">{{ job.display_name }}</td>
                   {% if job.status == 'SUCCESS' %}
