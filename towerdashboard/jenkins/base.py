@@ -182,7 +182,9 @@ def serialize_issues(project):
         needs_test_issues.append({
             'title': issue['title'],
             'url': issue['html_url'],
-            'updated_at': issue['updated_at'],
+            'updated_at': datetime
+                .strptime(issue['updated_at'], '%Y-%m-%dT%H:%M:%SZ')
+                .strftime('%b %-d %Y, %X'),
             'assignee': ', '.join([i['login'] for i in issue['assignees']])
         })
 

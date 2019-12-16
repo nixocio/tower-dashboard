@@ -70,10 +70,17 @@
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered" style="border-collapse: collapse">
+          <thead>
+            <tr style="border-bottom: double">
+              <th style="vertical-align: middle">Issue</th>
+              <th style="vertical-align: middle">Assignee</th>
+              <th style="vertical-align: middle">Last Updated</th>
+            </tr>
+          </thead>
           <tbody>
             {% for issue in version.issues.needs_test_issues %}
-            <tr>
+            <tr style="{{ '' if issue.assignee != '' else 'background-color: #ffffbb' }}">
                 <td><a href="{{ issue.url }}">{{ issue.title }}</a></td>
                 <td>{{ issue.assignee if issue.assignee != '' else 'Nobody yet' }}</td>
                 <td>{{ issue.updated_at }}</td>
