@@ -183,8 +183,8 @@ SIGN_OFF_DEPLOYMENTS = [
     {'deploy': deploy, 'tls': tls, 'fips': fips}
     for deploy, tls, fips in itertools.product(
         ('standalone', 'cluster'),
-        ('true', 'false'),
-        ('true', 'false'),
+        ('yes', 'no'),
+        ('yes', 'no'),
     )
 ]
 
