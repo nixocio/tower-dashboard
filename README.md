@@ -12,7 +12,7 @@ In order to build the production RPM you need to install the following
 packages:
 
 ```console
-$ sudo dnf install mock rpm-build rpmdevtools
+$ sudo dnf install mock rpm-build rpmdevtools dnf-utils
 ```
 
 Then add your user to the mock group:
@@ -34,7 +34,7 @@ To be able to setup a production environment, few steps are required.
   1. Locally build the `tower-dashboard` rpm. (Mock needs to be previously installed)
 
   ```bash
-  #> ./contrib/packaging/build_rpm.sh
+  $ ./contrib/packaging/build_rpm.sh
   ```
 
   2. By default, the script above will place the resulting RPM on `/tmp`. That
