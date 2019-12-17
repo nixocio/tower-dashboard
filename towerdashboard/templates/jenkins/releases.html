@@ -196,6 +196,14 @@
     <br/><br/>
     <h4>Unstable Jobs</h4>
     <hr/>
+    {% set version_unstable_jobs = [] %}
+    {% for job in unstable_jobs %}
+      {% if job.tower_id == version.id %}
+        {% set version_unstable_jobs = version_unstable_jobs.append(job) %}
+      {% endif %}
+    {% endfor %}
+
+    {% if version_unstable_jobs %}
     <br/><br/>
     <table class="table table-bordered">
         <thead align="center">
@@ -203,20 +211,29 @@
           <th scope="col">Result</th>
         </thead>
         <tbody>
-            {% for job in unstable_jobs %}
-              {% if job.tower_id == version.id %}
-                <tr>
-                  <td align="left">{{ job.display_name }}</td>
-                  <td align="center"><a href="{{ job.url }}"><img src="{{ url_for('static', filename='yellow.png') }}"></img></a></td>
-                  </td>
-                </tr>
-              {% endif %}
+            {% for job in version_unstable_jobs %}
+              <tr>
+                <td align="left">{{ job.display_name }}</td>
+                <td align="center"><a href="{{ job.url }}"><img src="{{ url_for('static', filename='yellow.png') }}"></img></a></td>
+                </td>
+              </tr>
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+    <h5>There are no unstable jobs to display.</h5>
+    {% endif %}
+
     <br/><br/>
     <h4>Failed Jobs</h4>
     <hr/>
+    {% set version_failed_jobs = [] %}
+    {% for job in failed_jobs %}
+      {% if job.tower_id == version.id %}
+        {% set version_failed_jobs = version_failed_jobs.append(job) %}
+      {% endif %}
+    {% endfor %}
+    {% if version_failed_jobs %}
     <br/><br/>
     <table class="table table-bordered">
         <thead align="center">
@@ -224,17 +241,18 @@
           <th scope="col">Result</th>
         </thead>
         <tbody>
-            {% for job in failed_jobs %}
-              {% if job.tower_id == version.id %}
-                <tr>
-                  <td align="left">{{ job.display_name }}</td>
-                   <td align="center"><a href="{{ job.url }}"><img src="{{ url_for('static', filename='red.png') }}"></img></a></td>
-                  </td>
-                </tr>
-              {% endif %}
+            {% for job in version_failed_jobs %}
+              <tr>
+                <td align="left">{{ job.display_name }}</td>
+                 <td align="center"><a href="{{ job.url }}"><img src="{{ url_for('static', filename='red.png') }}"></img></a></td>
+                </td>
+              </tr>
             {% endfor %}
         </tbody>
     </table>
+    {% else %}
+    <h5>There are no failed jobs to display.</h5>
+    {% endif %}
     <br/><br/>
 
 <div id="accordionSignOff">
