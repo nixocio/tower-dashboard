@@ -78,7 +78,7 @@ To be able to setup a production environment, few steps are required.
 
  5. Edit `/etc/tower-dashboard/settings.py`
 
- 6. Restart httpd
+ 6. `systemctl restart httpd`
 
 ### Updating Production Deployment
 
