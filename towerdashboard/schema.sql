@@ -60,6 +60,7 @@ CREATE TABLE sign_off_jobs (
   component TEXT NOT NULL,
   deploy TEXT NOT NULL,
   platform TEXT NOT NULL,
+  bundle TEXT,
   tls TEXT,
   fips TEXT,
   status TEXT,

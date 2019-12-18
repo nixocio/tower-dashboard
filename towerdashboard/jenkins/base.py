@@ -136,7 +136,7 @@ def sign_off_jobs():
         )
     else:
         payload = flask.request.json
-        required_keys = ['tower', 'component', 'deploy', 'platform', 'tls', 'fips', 'ansible']
+        required_keys = ['tower', 'component', 'deploy', 'platform', 'tls', 'fips', 'bundle', 'ansible']
         missing_keys = []
         for key in required_keys:
             if key not in payload:
@@ -148,7 +148,7 @@ def sign_off_jobs():
             content_type='application/json'
             )
         tower_query = form_tower_query(payload['tower'])
-        job_query = 'SELECT id FROM sign_off_jobs WHERE tower_id = (%s) AND component = "%s" AND deploy = "%s" AND platform = "%s" AND tls = "%s" AND fips = "%s" AND ansible = "%s"' % (tower_query, payload['component'], payload['deploy'], payload['platform'], payload['tls'], payload['fips'], payload['ansible'])
+        job_query = 'SELECT id FROM sign_off_jobs WHERE tower_id = (%s) AND component = "%s" AND deploy = "%s" AND platform = "%s" AND tls = "%s" AND fips = "%s" AND bundle = "%s" AND ansible = "%s"' % (tower_query, payload['component'], payload['deploy'], payload['platform'], payload['tls'], payload['fips'], payload['bundle'], payload['ansible'])
         return_info_query = 'SELECT display_name, created_at FROM sign_off_jobs WHERE id = (%s)' % (job_query)
 
         db_access = db.get_db()

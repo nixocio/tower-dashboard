@@ -180,9 +180,10 @@ SIGN_OFF_PLATFORMS = [
 ]
 
 SIGN_OFF_DEPLOYMENTS = [
-    {'deploy': deploy, 'tls': tls, 'fips': fips}
-    for deploy, tls, fips in itertools.product(
+    {'deploy': deploy, 'tls': tls, 'fips': fips, 'bundle': bundle}
+    for deploy, tls, fips, bundle in itertools.product(
         ('standalone', 'cluster'),
+        ('yes', 'no'),
         ('yes', 'no'),
         ('yes', 'no'),
     )
