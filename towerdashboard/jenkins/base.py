@@ -225,7 +225,7 @@ def releases():
     unstable_jobs = db_access.execute(unstable_jobs_query).fetchall()
     unstable_jobs = db.format_fetchall(unstable_jobs)
 
-    failed_jobs_query = 'SELECT * from sign_off_jobs WHERE status = "FAILED";'
+    failed_jobs_query = 'SELECT * from sign_off_jobs WHERE status = "FAILURE";'
     failed_jobs = db_access.execute(failed_jobs_query).fetchall()
     failed_jobs = db.format_fetchall(failed_jobs)
 

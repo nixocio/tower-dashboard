@@ -119,7 +119,7 @@ To be able to set up a dev environment, few steps are required.
   2. Create yourself a virtual environment
 
   ``` bash
-  #> virtualenv /path/to/towerdasboard/venv
+  #> virtualenv /path/to/towerdashboard/venv
   #> source /path/to/towerdashboard/venv/bin/activate
   ```
 
@@ -164,7 +164,7 @@ tower-dashboard should be running on your local loop on port 5000 (`http://127.0
 To update results of of entire os/anisble pipelines (shown in matrix) or the Openshift/Artifacts results, have pipeline POST to the dashboard in the following manner:
 
 ```bash
-curl -d '{"os":"rhel-7.7-x86_64", "ansible":"devel", "tower": "devel", "status": "SUCCESS", "url": "https://myjobrunnner.net/job/1"}' -H 'Content-type: application/json' -X POST http://127.0.0.1:5000/jenkins/results
+curl -d '{"os":"rhel-7.7-x86_64", "ansible":"devel", "tower": "devel", "status": "SUCCESS", "url": "https://myjobrunner.net/job/1"}' -H 'Content-type: application/json' -X POST http://127.0.0.1:5000/jenkins/results
 ```
 
 ### Sign off jobs
