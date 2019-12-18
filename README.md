@@ -191,6 +191,8 @@ These are unique on combination of the parameters:
 
 1)  `"ansible"` matching an item in the list of `ANSIBLE_VERSIONS` found in the [base data used](https://github.com/ansible/tower-dashboard/blob/master/towerdashboard/data/base.py), e.g. `rhel-7.7-x86_64` or `OpenShift`.
 
+1)  `"status"` matching a job result from Jenkins, e.g. `"SUCCESS"`, `"FAILURE"`, `"UNSTABLE"`.
+
 
 ## Exporting data from API
 
