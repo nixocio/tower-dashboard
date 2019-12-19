@@ -97,7 +97,7 @@ def init_db():
                             job = 'component_{}_platform_{}_deploy_{}_tls_{}_fips_{}_bundle_{}_ansible_{}'.format(component, config['os'], item['deploy'], item['tls'], item['fips'], item['bundle'], ansible_version)
                             tls_statement = '(TLS Enabled)'  if item['tls'] == 'yes' else ''
                             fips_statement = '(FIPS Enabled)'  if item['fips'] == 'yes' else ''
-                            bundle_statement = '(Bundle installer)'  if item['fips'] == 'yes' else ''
+                            bundle_statement = '(Bundle installer)'  if item['bundle'] == 'yes' else ''
                             display_name = '{} {} {} {} {} {} w/ ansible {}'.format(config['os'], item['deploy'], component.replace('_', ' '), tls_statement, fips_statement, bundle_statement, ansible_version)
                             display_name = display_name.title()
                             _tempfile.write(
