@@ -43,10 +43,19 @@ def get_project_by_name(name):
 
 
 def get_branches():
-    url = '{}/repos/{}/branches?per_page=100'.format(
+    url = '{}/repos/{}/branches'.format(
         API_GITHUB, current_app.config.get('TOWERQA_REPO')
     )
-    branches = github_request(url).json()
+    response = github_request(url)
+    # example of github response.link
+    # {'next': {'url': 'https://api.github.com/repositories/12570480/branches?page=2',
+    # 'rel': 'next'},
+    # 'last': {'url': 'https://api.github.com/repositories/12570480/branches?page=2',
+    # 'rel': 'last'}}
+    branches = response.json()
+    while 'next' in response.links:
+            response = github_request(response.links['next']['url'])
+            branches.extend(response.json())
     return [branch['name'] for branch in branches]
 
 

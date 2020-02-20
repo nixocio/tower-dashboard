@@ -229,8 +229,6 @@ def releases():
     failed_jobs = db_access.execute(failed_jobs_query).fetchall()
     failed_jobs = db.format_fetchall(failed_jobs)
 
-    branches = github.get_branches()
-
     def set_freshness(items, key, discard_old=False):
         for item in items:
             if item.get(key):
@@ -248,6 +246,8 @@ def releases():
     unstable_jobs = set_freshness(unstable_jobs, 'created_at', discard_old=True)
     failed_jobs = set_freshness(failed_jobs, 'created_at', discard_old=True)
     misc_results = set_freshness(misc_results, 'res_created_at')
+
+    branches = github.get_branches()
 
     for version in versions:
         if 'devel' not in version['version'].lower():
