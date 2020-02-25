@@ -32,7 +32,7 @@ def form_tower_query(tower):
     else:
         return 'SELECT id FROM tower_versions WHERE code = "%s"' % tower[0:3]
 
-def set_freshness(items, key, discard_old=False):
+def set_freshness(items, key, duration=2, discard_old=False):
     for item in items:
         if item.get(key):
             if type(item[key]) is date:
@@ -43,7 +43,7 @@ def set_freshness(items, key, discard_old=False):
                 )
             item['freshness'] = delta.days
     if discard_old:
-        items = [ x for x in items if x['freshness'] < 2 ]
+        items = [ x for x in items if x['freshness'] < duration ]
 
     return items
 
@@ -356,7 +356,7 @@ def integration_test_results():
     fetch_querry = 'SELECT * FROM integration_tests'
     integration_test_results = db_access.execute(fetch_querry).fetchall()
     integration_test_results = db.format_fetchall(integration_test_results)
-    integration_test_results = set_freshness(integration_test_results, 'created_at')
+    integration_test_results = set_freshness(integration_test_results, 'created_at', duration = 1)
 
 
     return flask.render_template(
