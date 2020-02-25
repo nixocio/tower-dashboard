@@ -97,6 +97,7 @@
     {% endif %}
     <br/><br/>
     <h4>Integration Results</h4>
+    Click <a href="{{ url_for(endpoint='jenkins.integration_test_results') }}">here </a>for Detailed Test Failure Report
     <hr/>
 
     <img src="{{ url_for('static', filename='green.png') }}"></img><img src="{{ url_for('static', filename='red.png') }}"></img><img src="{{ url_for('static', filename='yellow.png') }}"></img> Fresh results (Less than 2 days)
