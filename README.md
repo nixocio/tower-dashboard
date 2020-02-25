@@ -105,6 +105,14 @@ To be able to update a production environment, few steps are required:
      something like `/tmp/systemd-private-*-httpd.service-*/tmp/towerdashboard.sqlite`.
 
   5. Restart httpd
+  ```bash
+  systemctl restart httpd && systemctl status -l httpd
+  ```
+
+  6. Re-create the database
+  ```bash
+  curl http://tower-qe-dashboard.ansible.eng.rdu2.redhat.com/init-db
+  ```
 
 ### Development
 
@@ -126,7 +134,7 @@ To be able to set up a dev environment, few steps are required.
   3. Clone the repository
 
   ``` bash
-  #> git clone https://github.com/Spredzy/tower-dashboard
+  #> git clone https://github.com/ansible/tower-dashboard
   ```
 
   4. Install the dependencies
