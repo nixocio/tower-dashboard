@@ -21,9 +21,8 @@
     <h4>Integration Results</h4>
     <hr/>
 
-    <img src="{{ url_for('static', filename='green.png') }}"></img><img src="{{ url_for('static', filename='red.png') }}"></img><img src="{{ url_for('static', filename='yellow.png') }}"></img> Fresh results (Less than 2 days)
-    <img style="opacity: 0.5;" src="{{ url_for('static', filename='green.png') }}"></img><img style="opacity: 0.5;" src="{{ url_for('static', filename='red.png') }}"></img><img style="opacity: 0.5;" src="{{ url_for('static', filename='yellow.png') }}"></img> Non fresh results (older than 2 days)
-    <img src="{{ url_for('static', filename='grey.png') }}"></img> Never run yet
+    <img src="{{ url_for('static', filename='green.png') }}"></img><img src="{{ url_for('static', filename='red.png') }}"></img><img src="{{ url_for('static', filename='yellow.png') }}"></img> Fresh results (Same day)
+    <img style="opacity: 0.5;" src="{{ url_for('static', filename='green.png') }}"></img><img style="opacity: 0.5;" src="{{ url_for('static', filename='red.png') }}"></img><img style="opacity: 0.5;" src="{{ url_for('static', filename='yellow.png') }}"></img> Non fresh results (Previous test failures)
 
 
     <table id="table1" class="table table-bordered grid">
@@ -51,7 +50,6 @@
               <div class="filter"></div>
             </td>
             <td index=7>Job URL
-              <div class="filter"></div>
             </td>
             <td index=8>Failed On
               <div class="filter"></div>
@@ -74,19 +72,19 @@
                       <td align="left" id={{ test.ansible }}>{{ test.ansible }}</td>
 
                       {% if test.status == 'SUCCESS' %}
-                        {% if test.freshness < 2 %}
+                        {% if test.freshness < 1 %}
                         <td align="center" id='green'><a href="{{ test.url }}"><img src="{{ url_for('static', filename='green.png') }}"></img></a></td>
                         {% else %}
                         <td align="center" id='green'><a href="{{ test.url }}"><img style="opacity: 0.5" src="{{ url_for('static', filename='green.png') }}"></img></a></td>
                         {% endif %}
                       {% elif test.status == 'FAILURE' %}
-                        {% if test.freshness < 2 %}
+                        {% if test.freshness < 1 %}
                         <td align="center" id='red'><a href="{{ test.url }}"><img src="{{ url_for('static', filename='red.png') }}"></img></a></td>
                         {% else %}
                         <td align="center" id='red'><a href="{{ test.url }}"><img style="opacity: 0.5" src="{{ url_for('static', filename='red.png') }}"></img></a></td>
                         {% endif %}
                       {% elif test.status == 'UNSTABLE' %}
-                        {% if test.freshness < 2 %}
+                        {% if test.freshness < 1 %}
                         <td align="center" id='yellow'><a href="{{ test.url }}"><img src="{{ url_for('static', filename='yellow.png') }}"></img></a></td>
                         {% else %}
                         <td align="center" id='yellow'><a href="{{ test.url }}"><img style="opacity: 0.5" src="{{ url_for('static', filename='yellow.png') }}"></img></a></td>
