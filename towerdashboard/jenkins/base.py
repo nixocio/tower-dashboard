@@ -211,7 +211,7 @@ def sign_off_jobs():
             display_name = display_name.title()
             insert_query = (
                 "INSERT INTO sign_off_jobs (tower_id, job, display_name, component, platform, deploy, "
-                'tls, fips, bundle, ansible) VALUES ((%s), "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s");\n'
+                'tls, fips, bundle, ansible, status, url) VALUES ((%s), "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s");\n'
                 % (
                     tower_query,
                     job,
@@ -223,6 +223,8 @@ def sign_off_jobs():
                     payload["fips"],
                     payload["bundle"],
                     payload["ansible"],
+                    payload["status"],
+                    payload["url"]
                 )
             )
             db_access.execute(insert_query)
