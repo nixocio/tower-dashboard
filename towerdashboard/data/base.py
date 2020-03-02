@@ -49,15 +49,15 @@ TOWER_VERSIONS = [
         'end_of_full_support': None,
         'end_of_maintenance_support': None,
         'end_of_life': None,
-        'spreadsheet_url': 'https://docs.google.com/spreadsheets/d/1NNTN-SBM23UQPZAH9HylKhYQBAoyIsDcTlvl_ItDzHs/edit#gid=762158314'
+        'spreadsheet_url': 'https://docs.google.com/spreadsheets/d/1F6qSF6x_CVrfAQc8zDaScDTM7eESFujQvq9Cc7mMv0M/edit#gid=166211985'
     },
     {
         'name': 'Release 3.6',
         'code': '3.6',
-        'general_availability': None,
-        'end_of_full_support': None,
-        'end_of_maintenance_support': None,
-        'end_of_life': None,
+        'general_availability': '2019-11-14',
+        'end_of_full_support': '2020-05-14',
+        'end_of_maintenance_support': '2020-11-14',
+        'end_of_life': '2021-05-14',
         'spreadsheet_url': 'https://docs.google.com/spreadsheets/d/1NNTN-SBM23UQPZAH9HylKhYQBAoyIsDcTlvl_ItDzHs/edit#gid=762158314'
     },
     {
