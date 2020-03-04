@@ -9,9 +9,11 @@ table thead tr td{
 .filter{
   position:absolute;
   border: solid 1px;
-  top : 20px;
+  padding: 8px;
+  top : 80px;
+  height: 300px;
+  overflow: scroll;
   background-color : white;
-  width:max-content;
-  right:0;
+  text-align: left;
   display:none;
 }

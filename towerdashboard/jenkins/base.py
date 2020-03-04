@@ -359,6 +359,7 @@ def integration_test_results():
     integration_test_results = db_access.execute(fetch_querry).fetchall()
     integration_test_results = db.format_fetchall(integration_test_results)
     integration_test_results = set_freshness(integration_test_results, 'created_at', duration = 1)
+    integration_test_results = sorted(integration_test_results, key = lambda i: i['created_at'],reverse=True) 
 
 
     return flask.render_template(
